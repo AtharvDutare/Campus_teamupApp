@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Campus TeamUp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="updateDetails">Update Details</string>
+    <string name="postedBy">Posted By : </string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/hire"
+        android:title="Hire"
+        android:icon="@drawable/hire_icon"/>
+
+    <item android:id="@+id/apply"
+        android:title="Apply"
+        android:icon="@drawable/apply_icon"/>
+
+    <item android:id="@+id/projects"
+        android:title="Projects"
+        android:icon="@drawable/project_icon"/>
+</menu>

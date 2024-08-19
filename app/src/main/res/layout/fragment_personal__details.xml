@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+
+    tools:context=".MyFragments.Personal_Details">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_corner_edittext"
+        android:id="@+id/personalDetailLayout"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:id="@+id/nameLayout"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:text="Name :"/>
+           <EditText
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:textSize="18sp"
+               android:padding="4dp"
+               android:id="@+id/nameInput"
+               android:inputType="none"
+               android:background="@drawable/rounded_corner_edittext"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:gravity="center"
+            android:id="@+id/genderLayout"
+            android:layout_below="@+id/nameLayout"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:text="Gender :"/>
+
+            <Spinner
+                android:id="@+id/genderInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:padding="4dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:gravity="center"
+            android:id="@+id/dobLayout"
+            android:layout_below="@+id/genderLayout"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:text="DOB :     "/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="4dp"
+                android:id="@+id/dobInput"
+                android:inputType="none"
+                android:background="@drawable/rounded_corner_edittext"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/personalDetailLayout"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:layout_centerInParent="true"
+            android:id="@+id/editPersonalDetailsBtn"
+            android:text="Edit Details"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:id="@+id/updatePersonalDetailsBtn"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:text="Update Details"/>
+        <ProgressBar
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

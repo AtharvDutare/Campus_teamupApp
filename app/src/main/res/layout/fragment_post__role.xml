@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="5dp"
+    tools:context=".Post_Role"
+    android:background="@drawable/upper_round_corner">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/Post_Role_Heading"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Role Details"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_below="@id/Post_Role_Heading"
+        android:layout_height="2dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/Post_Role_Heading"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/roleLayout">
+        <TextView
+            android:id="@+id/knowMoreAboutRole"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circular_image"
+            android:gravity="center"
+            android:text="!"
+            android:textSize="30sp"
+            android:textColor="@color/black" />
+
+        <Spinner
+            android:id="@+id/roleListSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:layout_toRightOf="@+id/knowMoreAboutRole"
+            android:background="@drawable/rounded_corner_edittext" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/linkedInLayout"
+        android:layout_below="@+id/roleLayout">
+        <TextView
+            android:id="@+id/knowMoreAboutLinkedin"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circular_image"
+            android:gravity="center"
+            android:text="!"
+            android:textSize="30sp"
+            android:textColor="@color/black" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_toRightOf="@+id/knowMoreAboutLinkedin"
+            android:background="@drawable/rounded_corner_edittext"
+            android:textSize="18sp"
+            android:inputType="text"
+            android:id="@+id/linkedInUrl"
+            android:maxLines="1"
+            android:maxEms="15"
+            android:ellipsize="end"
+            android:hint="LinkedIn URL"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:id="@+id/codingProfileLayout"
+        android:layout_below="@+id/linkedInLayout">
+        <TextView
+            android:id="@+id/knowMoreAboutCodingProfile"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/circular_image"
+            android:gravity="center"
+            android:text="!"
+            android:textSize="30sp"
+            android:textColor="@color/black" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_toRightOf="@+id/knowMoreAboutCodingProfile"
+            android:background="@drawable/rounded_corner_edittext"
+            android:textSize="18sp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:id="@+id/codingUrl"
+            android:maxEms="15"
+            android:ellipsize="end"
+            android:hint="Coding Profile URL(Optional)"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/codingProfileLayout">
+
+        <Button
+            android:id="@+id/postRoleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/off_white"
+            android:gravity="center"
+            android:text="Post Role"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/codingProfileLayout"
+        android:layout_height="42dp">
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progressBar"/>
+    </RelativeLayout>
+
+</RelativeLayout>

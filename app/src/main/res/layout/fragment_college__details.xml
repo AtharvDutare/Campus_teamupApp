@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+
+    tools:context=".MyFragments.College_Details">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_corner_edittext"
+        android:id="@+id/collegeDetailLayout"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:id="@+id/degreeLayout"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:id="@+id/courseInput"
+                android:text="Degree / Course : Btech"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:gravity="center"
+            android:id="@+id/branchLayout"
+            android:layout_below="@+id/degreeLayout"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:text="Branch :"/>
+
+            <Spinner
+                android:id="@+id/branchInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:padding="4dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:gravity="center"
+            android:id="@+id/yearLayout"
+            android:layout_below="@+id/branchLayout"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_margin="4dp"
+                android:text="Year :     "/>
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="4dp"
+                android:id="@+id/yearInput"
+                android:inputType="none" />
+        </LinearLayout>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/collegeDetailLayout"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:layout_centerInParent="true"
+            android:id="@+id/editPersonalDetailsBtn"
+            android:text="Edit Details"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:id="@+id/updatePersonalDetailsBtn"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            android:text="Update Details"/>
+        <ProgressBar
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:id="@+id/progressBar"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

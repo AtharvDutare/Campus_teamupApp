@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User_Profile">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:padding="8dp"
+            android:id="@+id/homeToolbar">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:id="@+id/appName"
+                android:layout_marginLeft="50dp"
+                android:layout_centerVertical="true"
+                android:textStyle="bold"
+                android:text="@string/app_name"/>
+            <RelativeLayout
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/backToHomePage"
+                    android:src="@drawable/arrow_icon"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/nameAndImageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeToolbar"
+            android:layout_marginStart="4dp"
+            android:backgroundTint="@color/white"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:background="@drawable/circular_image"
+                android:layout_height="100dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageOfUser"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/camera_icon"
+                    app:shapeAppearanceOverlay="@style/CircleImageView" />
+                <TextView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:textSize="14sp"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/uploadProgress"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload image"
+                android:visibility="invisible"
+                android:id="@+id/uploadImage"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/detailsLayout"
+            android:layout_below="@id/nameAndImageLayout"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:padding="20dp">
+
+            <RelativeLayout
+                android:id="@+id/personalDetailsBtn"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/rounded_corner_edittext">
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/personal_details_icon"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/collegeDetailsBtn"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/rounded_corner_edittext">
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/college_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/codingProfileBtn"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/rounded_corner_edittext">
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/coding_icon"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/personalDetailsBtn"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/personalTextview"
+
+                    android:text="Personal Details" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/codingProfileBtn"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/collegeTextview"
+                    android:text="College Details" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/codingTextview"
+                    android:text="Coding Profiles" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detailsLayout"
+            android:id="@+id/profileFrameLayout"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_below="@+id/profileFrameLayout"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/logOutButton"
+                android:layout_centerInParent="true"
+                android:src="@drawable/logout_icon"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</ScrollView>
