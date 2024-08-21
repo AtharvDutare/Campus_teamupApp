@@ -54,7 +54,6 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
         // setting role
         holder.binding.userRole.setText("Role : " + model.getRoleName());
 
-
         //set image of user
 
         setImageOfUser(holder.binding.imageOfUser , model.getUserId());
@@ -64,6 +63,9 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
             deleteDialog.show();
             handleDialogBtnClick( position );
         });
+
+        // view the profile of user
+
 
 
     }

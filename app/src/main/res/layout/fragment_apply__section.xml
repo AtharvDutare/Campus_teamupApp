@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/searchLayout"
+        android:id="@+id/searchByRoleLayout"
         android:layout_margin="10dp"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchTeam"
+            android:id="@+id/searchRole"
             app:queryHint="Search..."
             app:iconifiedByDefault="false"
             android:background="@drawable/rounded_corner_edittext"/>
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/vacancyListRecyclerView"
-        android:layout_below="@+id/searchLayout"/>
+        android:layout_below="@+id/searchByRoleLayout"/>
 
 
 

@@ -9,23 +9,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:id="@+id/searchByName"
+        android:id="@+id/searchForRoleLayout"
         android:layout_margin="10dp"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.SearchView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchTeam"
+            android:id="@+id/searchRole"
             app:queryHint="Search..."
             app:iconifiedByDefault="false"
             android:background="@drawable/rounded_corner_edittext"/>
 
     </RelativeLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchByName"
+        android:layout_below="@+id/searchForRoleLayout"
         android:id="@+id/roleRecyclerView"/>
 
 </RelativeLayout>

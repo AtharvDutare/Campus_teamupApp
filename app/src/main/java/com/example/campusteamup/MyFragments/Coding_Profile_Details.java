@@ -26,9 +26,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 public class Coding_Profile_Details extends Fragment {
     FragmentCodingProfileDetailsBinding binding;
     String  githubUrl , leetcodeUrl , gfgUrl , codechefUrl , codeforcesUrl;
+    String currentUserId ;
 
     public Coding_Profile_Details() {
         // Required empty public constructor
+        currentUserId = FirebaseUtil.currentUserUid();
     }
 
 
@@ -96,7 +98,8 @@ public class Coding_Profile_Details extends Fragment {
 
     }
     public void updateDataToDatabase(String githubUrl , String leetcodeUrl , String gfgUrl , String codeforcesUrl , String codechefUrl){
-        FirebaseUtil.fetchCodingProfiles().set(new Coding_Profiles_Model(githubUrl,leetcodeUrl,gfgUrl,codeforcesUrl,codechefUrl))
+
+        FirebaseUtil.fetchCodingProfiles(currentUserId).set(new Coding_Profiles_Model(githubUrl,leetcodeUrl,gfgUrl,codeforcesUrl,codechefUrl))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -151,7 +154,7 @@ public class Coding_Profile_Details extends Fragment {
         return true;
     }
     public void setCodingProfilesDetails(){
-        FirebaseUtil.fetchCodingProfiles().get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        FirebaseUtil.fetchCodingProfiles(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 showProgressBar(false);

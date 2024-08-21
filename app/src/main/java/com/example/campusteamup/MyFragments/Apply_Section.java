@@ -1,30 +1,26 @@
 package com.example.campusteamup.MyFragments;
 
-import android.app.DownloadManager;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.campusteamup.MyAdapters.VacancyListAdapter;
-import com.example.campusteamup.MyModels.UserRoleDetails;
 import com.example.campusteamup.MyModels.VacancyModel;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
-import com.example.campusteamup.R;
+
 import com.example.campusteamup.databinding.FragmentApplySectionBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import android.os.Handler;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.Query;
+import com.google.firebase.firestore.Query;
+
 
 public class Apply_Section extends Fragment {
 
@@ -32,6 +28,8 @@ public class Apply_Section extends Fragment {
                 VacancyListAdapter vacancyListAdapter;
 
                 FragmentApplySectionBinding binding;
+                Handler handler ;
+                Runnable searchRunnable;
 
                   public Apply_Section() {
 
@@ -47,11 +45,32 @@ public class Apply_Section extends Fragment {
                     FirestoreRecyclerOptions<VacancyModel>options = new FirestoreRecyclerOptions.Builder<VacancyModel>()
                             .setQuery(allVacancyData , VacancyModel.class)
                                     .build();
-
+                    handler = new Handler();
                     binding.vacancyListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                     vacancyListAdapter = new VacancyListAdapter(options , requireContext());
-                    binding.vacancyListRecyclerView.addItemDecoration(new DividerItemDecoration(binding.searchLayout.getContext() , DividerItemDecoration.VERTICAL));
+                    binding.vacancyListRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext() , DividerItemDecoration.VERTICAL));
                     binding.vacancyListRecyclerView.setAdapter(vacancyListAdapter);
+
+
+                    binding.searchRole.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            handler.removeCallbacks(searchRunnable);
+                            searchRunnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    performSearch(query);
+                                }
+                            };
+                            handler.postDelayed(searchRunnable , 200);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            return true;
+                        }
+                    });
                     return binding.getRoot();
                 }
 
@@ -72,5 +91,20 @@ public class Apply_Section extends Fragment {
                 public void onStop() {
                     super.onStop();
                     vacancyListAdapter.stopListening();
+                }
+
+                public void updateResults(String roleToSearch){
+                      if(roleToSearch == null || roleToSearch.isEmpty())
+                          return;
+                     Query searchQuery =  FirebaseUtil.searchForVacancy(roleToSearch);
+                    FirestoreRecyclerOptions<VacancyModel>options = new FirestoreRecyclerOptions.Builder<VacancyModel>()
+                            .setQuery(searchQuery , VacancyModel.class)
+                            .build();
+                    vacancyListAdapter.updateOptions(options);
+                    vacancyListAdapter.notifyDataSetChanged();
+                }
+
+                private void performSearch(String query) {
+                    updateResults(query);
                 }
 }

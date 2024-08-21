@@ -58,8 +58,10 @@ public class College_Details extends Fragment {
     String [] yearOptions = {"1st year" , "2nd year" , "3rd year","4th year"};
     ArrayAdapter<String> yearAdapter;
     private String selectedBranch , selectedYear , selectedCourse;
+    String currentUserId;
     public College_Details() {
         // Required empty public constructor
+        currentUserId  = FirebaseUtil.currentUserUid();
     }
 
 
@@ -146,7 +148,8 @@ public class College_Details extends Fragment {
         }
     }
     public void updateDataToDatabase(){
-        FirebaseUtil.fetchCollegeDetails().set(new College_Details_Model(selectedYear,selectedBranch,selectedCourse))
+
+        FirebaseUtil.fetchCollegeDetails(currentUserId).set(new College_Details_Model(selectedYear,selectedBranch,selectedCourse))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -165,7 +168,8 @@ public class College_Details extends Fragment {
                 });
     }
     public void setCollegeDetails(){
-        FirebaseUtil.fetchCollegeDetails().get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+        FirebaseUtil.fetchCollegeDetails(currentUserId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot != null){

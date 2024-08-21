@@ -26,11 +26,11 @@ public class FirebaseUtil {
     public static DocumentReference fetchPersonalDetails(){
         return FirebaseFirestore.getInstance().collection("personalDetails").document(currentUserUid());
     }
-    public static DocumentReference fetchCollegeDetails(){
-        return FirebaseFirestore.getInstance().collection("collegeDetails").document(currentUserUid());
+    public static DocumentReference fetchCollegeDetails(String userId){
+        return FirebaseFirestore.getInstance().collection("collegeDetails").document(userId);
     }
-    public static DocumentReference fetchCodingProfiles(){
-        return FirebaseFirestore.getInstance().collection("codingProfiles").document(currentUserUid());
+    public static DocumentReference fetchCodingProfiles(String userId){
+        return FirebaseFirestore.getInstance().collection("codingProfiles").document(userId);
     }
     public static DocumentReference databaseUserImages(){
         return FirebaseFirestore.getInstance().collection("userImages").document(currentUserUid());
@@ -47,6 +47,16 @@ public class FirebaseUtil {
     }
     public static Query allVacancyPostedByUser(){
         return FirebaseFirestore.getInstance().collection("vacancy").whereEqualTo("postedBy" , currentUserUid());
+    }
+
+    public static Query checkExistenceOfUser(){
+        return FirebaseFirestore.getInstance().collection("users").whereEqualTo("userId",currentUserUid());
+    }
+    public static Query searchForVacancy(String rolesToSearch){
+        return FirebaseFirestore.getInstance().collection("vacancy").orderBy("roleLookingFor").startAt(rolesToSearch).endAt(rolesToSearch +  "\uf8ff");
+    }
+    public static Query searchForRoles(String rolesToSearch){
+        return FirebaseFirestore.getInstance().collection("roles").orderBy("roleName").startAt(rolesToSearch).endAt(rolesToSearch +  "\uf8ff");
     }
 
 }

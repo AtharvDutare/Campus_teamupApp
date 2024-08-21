@@ -10,6 +10,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowBackground">@color/white</item>
+
     </style>
     <style name="CustomEditText" parent="Widget.AppCompat.EditText">
         <item name="android:textCursorDrawable">@color/custom_cursor</item>

@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -111,6 +112,7 @@ public class User_Profile extends AppCompatActivity {
         });
 
         binding.personalDetailsBtn.setOnClickListener(v->{
+            binding.personalDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_btn));
             setUpFragment(PERSONAL_DETAILS_FRAGMENT_TAG,fragmentManager,new Personal_Details());
         });
 
@@ -152,20 +154,19 @@ public class User_Profile extends AppCompatActivity {
     public void setUpFragment(String tag , FragmentManager fragmentManager,Fragment fragmentToLoaded){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(tag.equals(PERSONAL_DETAILS_FRAGMENT_TAG)){
-            binding.personalTextview.setTypeface(null, Typeface.BOLD);
-            binding.codingTextview.setTypeface(null);
-            binding.collegeTextview.setTypeface(null);
+
+            handleUiForDetailsBtn(PERSONAL_DETAILS_FRAGMENT_TAG);
+
         }
         else if(tag.equals(COLLEGE_DETAILS_FRAGMENT_TAG))
         {
-            binding.personalTextview.setTypeface(null);
-            binding.codingTextview.setTypeface(null);
-            binding.collegeTextview.setTypeface(null,Typeface.BOLD);
+            handleUiForDetailsBtn(COLLEGE_DETAILS_FRAGMENT_TAG);
+
         }
         else if(tag.equals(CODING_PROFILE_FRAGMENT_TAG)){
-            binding.personalTextview.setTypeface(null);
-            binding.collegeTextview.setTypeface(null);
-            binding.codingTextview.setTypeface(null,Typeface.BOLD);
+
+            handleUiForDetailsBtn(CODING_PROFILE_FRAGMENT_TAG);
+
         }
         fragmentTransaction.replace(R.id.profileFrameLayout,fragmentToLoaded);
         fragmentTransaction.commit();
@@ -266,5 +267,34 @@ public class User_Profile extends AppCompatActivity {
                 .load(uri)
                 .into(binding.imageOfUser);
         binding.progressBar.setVisibility(View.GONE);
+    }
+    public void handleUiForDetailsBtn(String tag){
+        if(tag.equals(PERSONAL_DETAILS_FRAGMENT_TAG)){
+            binding.personalDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_btn));
+            binding.codingProfileBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+            binding.collegeDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+
+            binding.personalTextview.setTypeface(null, Typeface.BOLD);
+            binding.codingTextview.setTypeface(null);
+            binding.collegeTextview.setTypeface(null);
+        }
+        else if(tag.equals(COLLEGE_DETAILS_FRAGMENT_TAG)){
+            binding.collegeDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_btn));
+            binding.personalDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+            binding.codingProfileBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+
+            binding.personalTextview.setTypeface(null);
+            binding.codingTextview.setTypeface(null);
+            binding.collegeTextview.setTypeface(null,Typeface.BOLD);
+        }
+        else if(tag.equals(CODING_PROFILE_FRAGMENT_TAG)){
+            binding.codingProfileBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_btn));
+            binding.personalDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+            binding.collegeDetailsBtn.setBackground(AppCompatResources.getDrawable(this , R.drawable.rounded_corner_edittext));
+
+            binding.personalTextview.setTypeface(null);
+            binding.collegeTextview.setTypeface(null);
+            binding.codingTextview.setTypeface(null,Typeface.BOLD);
+        }
     }
 }
