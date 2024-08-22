@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="2dp"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -21,8 +21,8 @@
             android:textStyle="bold"
             android:text="@string/app_name"/>
         <RelativeLayout
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:background="@drawable/circular_image"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true">
@@ -38,18 +38,12 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <com.google.android.material.divider.MaterialDivider
-    android:layout_width="match_parent"
-    android:layout_height="2dp"
-        android:layout_below="@+id/homeToolbar"
-    android:id="@+id/divider"/>
-
     <FrameLayout
         android:id="@+id/mainFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNavLayout"
-        android:layout_below="@+id/divider"
+        android:layout_below="@+id/homeToolbar"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"

@@ -2,12 +2,14 @@ package com.example.campusteamup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,20 +122,32 @@ public class MainActivity extends AppCompatActivity  {
         return roleViewModel;
     }
     public  void setUserImageToProfileBtn(){
+        try{
+
+
         FirebaseUtil.databaseUserImages().get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(task.isSuccessful()){
                             DocumentSnapshot snapshot = task.getResult();
-                            if(snapshot.exists()){
+                            if(snapshot != null && snapshot.exists()){
                                 String imageUri = snapshot.getString("imageUri");
                                 if(imageUri != null && !imageUri.isEmpty())
                                     loadImage(imageUri);
+                                else {
+                                    activityMainBinding.profileButton.setImageResource(R.drawable.profile_icon);
+                                }
+                            }
+                            else{
+                                activityMainBinding.profileButton.setImageResource(R.drawable.profile_icon);
                             }
                         }
                     }
                 });
+        }
+        catch (Exception e){
+        }
     }
     public void loadImage(String imageUri){
         Glide.with(this).load(imageUri).into(activityMainBinding.profileButton);

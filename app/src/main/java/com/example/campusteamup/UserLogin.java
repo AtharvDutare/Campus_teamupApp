@@ -35,27 +35,30 @@ public class UserLogin extends AppCompatActivity {
         userLoginBinding = ActivityUserLoginBinding.inflate(getLayoutInflater());
         setContentView(userLoginBinding.getRoot());
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail().build();
-        googleSignInClient  = GoogleSignIn.getClient(this,gso);
+
+
+            firebaseAuth = FirebaseAuth.getInstance();
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail().build();
+            googleSignInClient  = GoogleSignIn.getClient(this,gso);
+
+
+
 
         resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-
             if(result.getResultCode() == RESULT_OK){
+                try {
                 Intent data = result.getData();
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                try {
+
                     GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                    if(Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this )){
+                    Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this );
                         startActivity(new Intent(UserLogin.this , MainActivity.class));
                         finish();
-                    }
-                    else{
-                        Call_Method.showToast(UserLogin.this, "Authentication failed");
-                    }
+
+
 
 
                 } catch (ApiException e) {
@@ -64,10 +67,16 @@ public class UserLogin extends AppCompatActivity {
             }
         });
 
-        userLoginBinding.loginWithGoogle.setOnClickListener(v -> {
-            Intent intent = googleSignInClient.getSignInIntent();
-            resultLauncher.launch(intent);
-        });
+        try{
+            userLoginBinding.loginWithGoogle.setOnClickListener(v -> {
+                Intent intent = googleSignInClient.getSignInIntent();
+                resultLauncher.launch(intent);
+            });
+        }
+        catch (Exception e){
+            Call_Method.showToast(UserLogin.this , "SignIn click exception");
+        }
+
 
         Call_Method.lightActionBar(getWindow());
 

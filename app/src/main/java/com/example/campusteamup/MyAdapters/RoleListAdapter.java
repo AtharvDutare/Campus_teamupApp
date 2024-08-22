@@ -3,6 +3,7 @@ package com.example.campusteamup.MyAdapters;
 import android.app.Dialog;
 import android.content.Context;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyModels.UserRoleDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.R;
+import com.example.campusteamup.View_Profile;
 import com.example.campusteamup.databinding.RoleSingleRowBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -66,6 +68,9 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
 
         // view the profile of user
 
+        holder.binding.viewProfile.setOnClickListener(v->{
+            context.startActivity(new Intent(context , View_Profile.class));
+        });
 
 
     }
@@ -111,6 +116,8 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
         no.setOnClickListener(v->{
             deleteDialog.dismiss();
         });
+
+
     }
     public void setImageOfUser(ImageView imageView , String userId){
         FirebaseUtil.differentUserImages(userId).get()

@@ -62,7 +62,7 @@ public class Apply_Section extends Fragment {
                                     performSearch(query);
                                 }
                             };
-                            handler.postDelayed(searchRunnable , 200);
+                            handler.postDelayed(searchRunnable , 1000);
                             return true;
                         }
 

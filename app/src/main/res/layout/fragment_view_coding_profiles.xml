@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View_coding_profiles">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/rounded_corner_edittext"
+        android:id="@+id/codingProfileDetails"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:gravity="center"
+        android:id="@+id/githubLayout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/github_icon"
+            android:textSize="18sp"
+            android:layout_margin="4dp"
+            />
+        <TextView
+            android:id="@+id/showGithubUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link_color"
+            android:padding="4dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:gravity="center"
+        android:id="@+id/leetcodeLayout"
+        android:layout_below="@+id/githubLayout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/leetcode_icon"
+            android:textSize="18sp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/showLeetcodeUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link_color"
+            android:padding="4dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:gravity="center"
+        android:id="@+id/gfgLayout"
+        android:layout_below="@+id/leetcodeLayout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/gfg_icon"
+            android:textSize="18sp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/showGfgUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link_color"
+            android:padding="4dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:gravity="center"
+        android:id="@+id/codeforcesLayout"
+        android:layout_below="@+id/gfgLayout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/codeforces_icon"
+            android:textSize="18sp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/showCodeforcesUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link_color"
+            android:padding="4dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:gravity="center"
+        android:id="@+id/codechefLayout"
+        android:layout_below="@+id/codeforcesLayout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/codechef_icon"
+            android:textSize="18sp"
+            android:layout_margin="4dp" />
+
+        <TextView
+            android:id="@+id/showCodechefUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/link_color"
+            android:padding="4dp"
+            android:textSize="18sp" />
+    </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

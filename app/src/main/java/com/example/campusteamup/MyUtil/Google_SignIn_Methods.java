@@ -18,47 +18,52 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Google_SignIn_Methods {
-    public static boolean authenticateWithFirebase(FirebaseAuth firebaseAuth , String idToken , Context context ){
+    public static void authenticateWithFirebase(FirebaseAuth firebaseAuth , String idToken , Context context ){
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken , null);
-        final boolean[] isAuthenticated = new boolean[]{false};
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            isAuthenticated[0] = true;
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            if(user != null) {
-                                newUserOrExisting(new CheckUserExits() {
-                                    @Override
-                                    public void checkUserExits(boolean isExists) {
-                                        if (isExists) {
-                                            Call_Method.showToast(context, "Welcome back");
+            firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
 
-                                        } else {
-                                            setEmailAndNameOfUser(user);
-                                            Call_Method.showToast(context, "Sign up successfully");
+                                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                                if (user != null) {
+                                    newUserOrExisting(new CheckUserExits() {
+                                        @Override
+                                        public void checkUserExits(boolean isExists) {
+                                            if (isExists) {
+                                                Call_Method.showToast(context, "Welcome back");
+
+                                            } else {
+                                                setEmailAndNameOfUser(user , context);
+                                                Call_Method.showToast(context, "Sign up successfully");
+                                            }
+
                                         }
+                                    });
+                                }
+                                else {
+                                    Call_Method.showToast(context , "null user ");
+                                }
 
-                                    }
-                                });
+
+                            } else {
+                                Call_Method.showToast(context, "Sign in failed");
                             }
+                        }
+                    });
 
 
-                        }
-                        else{
-                            Call_Method.showToast(context , "Sign in failed");
-                        }
-                    }
-                });
-        return isAuthenticated[0];
+
     }
-    public static void setEmailAndNameOfUser(FirebaseUser userDetails){
+    public static void setEmailAndNameOfUser(FirebaseUser userDetails , Context context){
+            UserSignUpDetails userSignUpDetails = new UserSignUpDetails(userDetails.getEmail(), Timestamp.now(), FirebaseUtil.currentUserUid(),userDetails.getDisplayName());
 
-        UserSignUpDetails userSignUpDetails = new UserSignUpDetails(userDetails.getEmail(), Timestamp.now(), FirebaseUtil.currentUserUid(),userDetails.getDisplayName());
+            FirebaseUtil.currentUserDetails().set(userSignUpDetails);
 
-        FirebaseUtil.currentUserDetails().set(userSignUpDetails);
+
     }
     public static void newUserOrExisting(CheckUserExits exists){
         FirebaseUtil.checkExistenceOfUser().get()

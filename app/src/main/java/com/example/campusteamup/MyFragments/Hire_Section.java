@@ -77,7 +77,7 @@ public class Hire_Section extends Fragment {
                     }
                 };
 
-                handler.postDelayed(searchRunnable , 3000);
+                handler.postDelayed(searchRunnable , 1000);
                 return true;
             }
 

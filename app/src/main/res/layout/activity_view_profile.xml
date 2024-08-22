@@ -8,5 +8,58 @@
 <androidx.appcompat.widget.Toolbar
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/toolBar"
     app:title="@string/app_name"/>
+
+    <RelativeLayout
+        android:id="@+id/detailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolBar"
+        android:layout_marginStart="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginBottom="5sp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/collegeDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/black_bg_rounded_btn"
+            android:textColor="@color/white"
+            android:padding="6dp"
+            android:text="College Details" />
+
+        <TextView
+            android:id="@+id/codingDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/collegeDetails"
+            android:background="@drawable/rounded_btn"
+            android:padding="6dp"
+            android:text="Coding Profiles" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detailsLayout"
+        android:layout_margin="10dp"
+        android:id="@+id/imageOfUser">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/circular_image"
+            android:src="@drawable/profile_icon"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageOfUser"
+        android:layout_margin="5sp"
+        android:id="@+id/mainFrameLayout"/>
 </RelativeLayout>

@@ -71,13 +71,10 @@ ActivityResultLauncher<Intent> resultLauncher;
                 try {
                     GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                    if(Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this )){
+                    Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this );
                         startActivity(new Intent(UserSignUp.this, MainActivity.class));
                         finish();
-                    }
-                    else {
-                        Call_Method.showToast(UserSignUp.this, "Authentication failed");
-                    }
+
 
 
                 } catch (ApiException e) {
