@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public class View_college_details extends Fragment {
     FragmentViewCollegeDetailsBinding binding;
+    String userId ;
 
     public View_college_details() {
         // Required empty public constructor
@@ -31,15 +32,17 @@ public class View_college_details extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
          binding = FragmentViewCollegeDetailsBinding.inflate(inflater);
-
+         if(getArguments() != null){
+             userId = getArguments().getString("userId");
+         }
          setDataToViews();
          return binding.getRoot();
     }
     public void setDataToViews(){
-        String currentUserId  = FirebaseUtil.currentUserUid(); // here currentUser id need to be changed
 
 
-        FirebaseUtil.fetchCollegeDetails(currentUserId).get()
+
+        FirebaseUtil.fetchCollegeDetails(userId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -32,7 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Post_Role extends BottomSheetDialogFragment {
-    String[] listOfRole = {"Android developer", "IOS Developer", "Flutter Developer", "Web Frontend", "Web backend", "UI/UX"};
+    String[] listOfRole = {"Android App Developer", "IOS App Developer", "Flutter Developer", "Web Frontend", "Web Backend", "UI/UX Designer"};
     ArrayAdapter<String> roleListAdapter;
     FragmentPostRoleBinding fragmentPostRoleBinding;
     private String selectedRole;

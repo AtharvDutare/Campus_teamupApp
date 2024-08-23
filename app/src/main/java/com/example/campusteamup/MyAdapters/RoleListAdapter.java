@@ -34,6 +34,7 @@ import org.w3c.dom.Document;
 public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , RoleListAdapter.RoleListViewHolder> {
     Dialog deleteDialog ;
     Context context;
+    String imageOfUser  ;
     public RoleListAdapter(@NonNull FirestoreRecyclerOptions<UserRoleDetails> options , Context context) {
         super(options);
         this.context = context;
@@ -69,7 +70,11 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
         // view the profile of user
 
         holder.binding.viewProfile.setOnClickListener(v->{
-            context.startActivity(new Intent(context , View_Profile.class));
+            Intent viewProfile = new Intent(context , View_Profile.class);
+            viewProfile.putExtra("userId", model.getUserId());
+            viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
+            viewProfile.putExtra("userImage",imageOfUser);
+            context.startActivity(viewProfile);
         });
 
 
@@ -128,8 +133,11 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if(documentSnapshot.exists()){
                                 String imageUri = documentSnapshot.getString("imageUri");
-                                if(imageUri != null && !imageUri.isEmpty())
+                                if(imageUri != null && !imageUri.isEmpty()){
+                                    imageOfUser = imageUri;
                                     Glide.with(context).load(imageUri).into(imageView);
+                                }
+
 
                             }
                         }
