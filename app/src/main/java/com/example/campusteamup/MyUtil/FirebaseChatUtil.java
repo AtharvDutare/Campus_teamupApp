@@ -22,4 +22,5 @@ public class FirebaseChatUtil {
         return getChatRoomReference(chatRoomId).collection("chats");
     }
 
+
 }

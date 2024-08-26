@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.util.Log;
@@ -49,7 +50,17 @@ public class Hire_Section extends Fragment {
         binding.roleRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext(), DividerItemDecoration.VERTICAL));
         binding.roleRecyclerView.setAdapter(roleListAdapter);
 
+        binding.shimmerLayout.startShimmerAnimation();
 
+        roleListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                binding.shimmerLayout.stopShimmerAnimation();
+                binding.shimmerLayout.setVisibility(View.GONE);
+                binding.roleRecyclerView.setVisibility(View.VISIBLE);
+            }
+        });
         //handing search query
 
 

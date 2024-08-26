@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:background="@drawable/black_bg_rounded_btn"
+            android:background="@drawable/blue_bg_rounded_btn"
             android:textColor="@color/white"
             android:padding="6dp"
             android:text="College Details" />
@@ -40,6 +40,7 @@
             android:layout_toEndOf="@id/collegeDetails"
             android:background="@drawable/rounded_btn"
             android:padding="6dp"
+            android:textColor="@color/blue_btn"
             android:text="Coding Profiles" />
     </RelativeLayout>
 
@@ -52,15 +53,26 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp">
-
-        <com.google.android.material.imageview.ShapeableImageView
+        <RelativeLayout
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/profile_icon"
-            android:id="@+id/viewImage"
-            app:shapeAppearanceOverlay="@style/CircleImageView"/>
+            android:background="@drawable/circular_image"
+            android:layout_centerInParent="true">
+            <ProgressBar
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:visibility="invisible"
+                android:id="@+id/progressBar"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/viewImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_icon"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
+        </RelativeLayout>
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -80,14 +92,14 @@
 
         <TextView
             android:id="@+id/sendMessage"
+            android:background="@drawable/rounded_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:background="@drawable/black_bg_rounded_btn"
             android:padding="6dp"
             android:text="Send Message"
-            android:textColor="@color/white" />
+            android:textColor="@color/blue_btn" />
     </RelativeLayout>
 
 

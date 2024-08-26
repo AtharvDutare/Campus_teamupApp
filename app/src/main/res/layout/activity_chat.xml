@@ -6,25 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".Chat">
 
-   <androidx.appcompat.widget.Toolbar
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/toolBar"
-       app:title="User"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolBar">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/backToViewProfile"
+            android:src="@drawable/arrow_icon"
+            />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/imageOfOtherUser"
+            android:src="@drawable/profile_icon"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            android:layout_toEndOf="@+id/backToViewProfile"
+            android:layout_marginStart="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="20sp"
+            android:id="@+id/otherUserName"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/imageOfOtherUser"/>
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="10sp"
         android:paddingEnd="10sp"
+        android:id="@+id/sendMessageLayout"
         android:layout_alignParentBottom="true">
+
         <EditText
+            android:id="@+id/messageInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12sp"
-            android:layout_margin="6sp"
-            android:id="@+id/messageInput"
+            android:layout_marginStart="6sp"
+            android:layout_marginTop="6sp"
+            android:layout_marginEnd="6sp"
+            android:layout_marginBottom="6sp"
             android:background="@drawable/rounded_corner_edittext"
-            android:hint="Message"/>
+            android:hint="Message"
+            android:padding="12sp" />
         <ImageView
             android:layout_width="36sp"
             android:layout_height="36sp"
@@ -34,4 +67,10 @@
             android:layout_centerVertical="true"
             android:src="@drawable/send_message"/>
     </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/sendMessageLayout"
+        android:layout_below="@id/toolBar"
+        android:id="@+id/chatRecyclerView"/>
 </RelativeLayout>

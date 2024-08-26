@@ -19,7 +19,8 @@
         <activity
             android:name=".Chat"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".View_Profile"/>
         <activity
             android:name=".View_Profile"
             android:exported="false"

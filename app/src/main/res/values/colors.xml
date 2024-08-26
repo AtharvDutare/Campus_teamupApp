@@ -3,10 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
     <color name="off_white">#E6E5E5</color>
-
+    <color name="blue_btn">#246BE1</color>
     <color name="custom_cursor">#000</color>
     <color name="lightBlack">#807E7E</color>
     <color name="link_color">#95A3F1</color>
-
+    <color name="shimmer_bg">#DDDDDD</color>
 
 </resources>

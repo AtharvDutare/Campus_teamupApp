@@ -6,7 +6,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+
 public class Call_Method {
+    public static  String userId = null;
+    public static  String userImage = null;
+    public static String userName = null;
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }

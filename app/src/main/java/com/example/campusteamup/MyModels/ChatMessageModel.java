@@ -1,8 +1,10 @@
 package com.example.campusteamup.MyModels;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.Timestamp;
 
-public class ChatMessageModel {
+public class ChatMessageModel  {
     String message , senderId;
     Timestamp timeWhenMessageSent;
 

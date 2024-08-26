@@ -49,6 +49,8 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
         if(FirebaseUtil.currentUserUid().equals(model.getUserId())){
             holder.binding.userName.setText("You");
             holder.binding.deleteRole.setVisibility(View.VISIBLE);
+
+
         }
         else {
             holder.binding.deleteRole.setVisibility(View.GONE);
@@ -74,6 +76,10 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
             viewProfile.putExtra("userId", model.getUserId());
             viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
             viewProfile.putExtra("userImage",imageOfUser);
+            Log.d("Image in adapter",imageOfUser);
+
+            viewProfile.putExtra("userName",model.getUserSignUpDetails().getUserName());
+
             context.startActivity(viewProfile);
         });
 

@@ -182,7 +182,7 @@ public class User_Profile extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        binding.uploadProgress.setText("");
+                        binding.progressBar.setVisibility(View.GONE);
                     }
                 });
     }
@@ -195,8 +195,8 @@ public class User_Profile extends AppCompatActivity {
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                        binding.uploadProgress.setText(String.format(Locale.getDefault() , "%.0f%%", progress));
+                        binding.progressBar.setVisibility(View.VISIBLE);
+
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -218,7 +218,6 @@ public class User_Profile extends AppCompatActivity {
                             });
                         }
                         else {
-                            binding.uploadProgress.setText("");
                             binding.imageOfUser.setImageResource(R.drawable.camera_icon);
                             Call_Method.showToast(User_Profile.this , "Upload failed");
                         }

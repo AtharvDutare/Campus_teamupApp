@@ -62,12 +62,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/camera_icon"
                     app:shapeAppearanceOverlay="@style/CircleImageView" />
-                <TextView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:textSize="14sp"
-                    android:layout_centerInParent="true"
-                    android:id="@+id/uploadProgress"/>
 
                 <ProgressBar
                     android:id="@+id/progressBar"

@@ -29,9 +29,9 @@ public class View_coding_profiles extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentViewCodingProfilesBinding.inflate(inflater);
-        if(getArguments() != null){
-            userId = getArguments().getString("userId");
-        }
+
+            userId = Call_Method.userId;
+
         setDataToViews();
         return binding.getRoot();
     }
