@@ -69,8 +69,12 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
             handleDialogBtnClick( position );
         });
 
-        // view the profile of user
+        // when no data to show because of low network ,  prevent user from view others profile
+        if(model.getUserId() == null){
+            holder.binding.viewProfile.setVisibility(View.GONE);
+        }
 
+        // view the profile of user
         holder.binding.viewProfile.setOnClickListener(v->{
             Intent viewProfile = new Intent(context , View_Profile.class);
             viewProfile.putExtra("userId", model.getUserId());

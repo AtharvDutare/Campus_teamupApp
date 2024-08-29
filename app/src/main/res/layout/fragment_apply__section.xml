@@ -21,12 +21,29 @@
             android:background="@drawable/rounded_corner_edittext"/>
 
     </RelativeLayout>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/shimmerLayout"
+        android:layout_below="@id/searchByRoleLayout">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/shimmer_role_list"/>
+        <include layout="@layout/shimmer_role_list"/>
+        <include layout="@layout/shimmer_role_list"/>
+        <include layout="@layout/shimmer_role_list"/>
+        <include layout="@layout/shimmer_role_list"/>
+    </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/vacancyListRecyclerView"
-        android:layout_below="@+id/searchByRoleLayout"/>
+        android:layout_below="@+id/searchByRoleLayout"
+        android:visibility="invisible"/>
 
 
 

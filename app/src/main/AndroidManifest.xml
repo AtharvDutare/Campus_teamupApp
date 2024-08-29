@@ -17,10 +17,14 @@
         android:theme="@style/Theme.CampusTeamUp"
         tools:targetApi="31">
         <activity
+            android:name=".Drawer_Items_Activity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
+        <activity
             android:name=".Chat"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".View_Profile"/>
+            android:parentActivityName=".View_Profile"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".View_Profile"
             android:exported="false"

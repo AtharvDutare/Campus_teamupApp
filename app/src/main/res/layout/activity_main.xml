@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+   android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="2dp"
-    tools:context=".MainActivity">
+    >
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:padding="8dp"
         android:id="@+id/homeToolbar">
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="4dp"
+            android:layout_margin="6dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/drawer_btn"
+            android:id="@+id/drawerBtn"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/drawerBtn"
             android:textSize="22sp"
             android:layout_centerVertical="true"
             android:textStyle="bold"
             android:text="@string/app_name"/>
-        <RelativeLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/circular_image"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true">
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/profileButton"
-                app:shapeAppearanceOverlay="@style/CircleImageView"
-                android:scaleType="centerCrop"
-                android:layout_centerInParent="true"
-                android:src="@drawable/profile_icon"
-                />
-        </RelativeLayout>
     </RelativeLayout>
 
     <FrameLayout
@@ -88,3 +91,17 @@
         android:src="@drawable/add_role_icon" />
 
 </RelativeLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:backgroundTint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/navigationView"
+        android:layout_gravity="start"
+        app:itemIconPadding="30dp"
+        app:itemIconSize="30dp"
+        app:dividerInsetStart="2dp"
+        app:dividerInsetEnd="2dp"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer_items"/>
+
+</androidx.drawerlayout.widget.DrawerLayout>

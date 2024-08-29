@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,9 @@ public class Apply_Section extends Fragment {
                     vacancyListAdapter = new VacancyListAdapter(options , requireContext());
                     binding.vacancyListRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext() , DividerItemDecoration.VERTICAL));
                     binding.vacancyListRecyclerView.setAdapter(vacancyListAdapter);
-
+                    vacancyListAdapter.startListening();
+                    binding.shimmerLayout.startShimmerAnimation();
+                    handleShimmerEffect();
 
                     binding.searchRole.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
@@ -106,5 +109,23 @@ public class Apply_Section extends Fragment {
 
                 private void performSearch(String query) {
                     updateResults(query);
+                }
+                public void handleShimmerEffect(){
+                      vacancyListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+                          @Override
+                          public void onChanged() {
+                              super.onChanged();
+                              handler = new Handler();
+                              handler.postDelayed(new Runnable() {
+                                  @Override
+                                  public void run() {
+                                      vacancyListAdapter.startListening();
+                                      binding.shimmerLayout.stopShimmerAnimation();
+                                      binding.shimmerLayout.setVisibility(View.GONE);
+                                      binding.vacancyListRecyclerView.setVisibility(View.VISIBLE);
+                                  }
+                              },500);
+                          }
+                      });
                 }
 }

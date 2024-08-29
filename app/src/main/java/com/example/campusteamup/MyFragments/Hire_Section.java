@@ -49,6 +49,7 @@ public class Hire_Section extends Fragment {
         roleListAdapter = new RoleListAdapter(option , requireActivity());
         binding.roleRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext(), DividerItemDecoration.VERTICAL));
         binding.roleRecyclerView.setAdapter(roleListAdapter);
+        roleListAdapter.startListening();
 
         binding.shimmerLayout.startShimmerAnimation();
 
@@ -56,9 +57,17 @@ public class Hire_Section extends Fragment {
             @Override
             public void onChanged() {
                 super.onChanged();
-                binding.shimmerLayout.stopShimmerAnimation();
-                binding.shimmerLayout.setVisibility(View.GONE);
-                binding.roleRecyclerView.setVisibility(View.VISIBLE);
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        roleListAdapter.startListening();
+                        binding.shimmerLayout.stopShimmerAnimation();
+                        binding.shimmerLayout.setVisibility(View.GONE);
+                        binding.roleRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                },500);
+
             }
         });
         //handing search query

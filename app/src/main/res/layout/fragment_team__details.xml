@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="teamDetails"
+            type="com.example.campusteamup.Team_Members_Model" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MyFragments.Team_Details"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:id="@+id/teamDetailHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_btn"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Team Members Details"
+            android:textSize="22sp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/allMemberLayout"
+            android:layout_below="@+id/teamDetailHeading"
+            android:background="@drawable/rounded_corner_edittext">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:id="@+id/teamLeaderLayout"
+                android:gravity="center">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/teamLeaderInput"
+                    android:inputType="none"
+                    android:hint="Team Leader"
+                    android:text="@{teamDetails.teamLeader}"
+                    android:background="@drawable/rounded_corner_edittext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:id="@+id/member1Layout"
+                android:layout_below="@+id/teamLeaderLayout"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/member1Input"
+                    android:hint="Member 2"
+                    android:text="@{teamDetails.member2}"
+                    android:background="@drawable/rounded_corner_edittext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:id="@+id/member2Layout"
+                android:layout_below="@+id/member1Layout"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/member2Input"
+                    android:hint="Member 3"
+                    android:text="@{teamDetails.member3}"
+                    android:background="@drawable/rounded_corner_edittext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:id="@+id/member3Layout"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/member2Layout">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/member3Input"
+                    android:hint="Member 4"
+                    android:text="@{teamDetails.member4}"
+                    android:background="@drawable/rounded_corner_edittext" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:id="@+id/member5Layout"
+                android:layout_below="@+id/member3Layout"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/member5Input"
+                    android:hint="Member 5"
+                    android:text="@{teamDetails.member5}"
+                    android:background="@drawable/rounded_corner_edittext" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:gravity="center"
+                android:id="@+id/member4Layout"
+                android:layout_below="@+id/member5Layout"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:padding="6dp"
+                    android:id="@+id/member4Input"
+                    android:hint="Member 6"
+                    android:text="@{teamDetails.member6}"
+                    android:background="@drawable/rounded_corner_edittext" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/allMemberLayout"
+            android:layout_margin="30dp"
+            android:backgroundTint="@color/black"
+            android:text="Edit Details"
+            android:id="@+id/editTeamDetailsBtn" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/allMemberLayout"
+            android:layout_margin="30dp"
+            android:backgroundTint="@color/black"
+            android:text="Update Details"
+            android:visibility="invisible"
+            android:id="@+id/updateTeamDetailsBtn" />
+    </RelativeLayout>
+</layout>
