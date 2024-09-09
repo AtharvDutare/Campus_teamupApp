@@ -64,6 +64,7 @@
                 android:layout_centerInParent="true"
                 android:visibility="invisible"
                 android:id="@+id/progressBar"/>
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/viewImage"
                 android:layout_width="80dp"

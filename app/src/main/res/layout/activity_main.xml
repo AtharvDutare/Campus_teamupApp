@@ -33,8 +33,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/drawerBtn"
+            android:layout_toEndOf="@+id/drawerBtn"
             android:textSize="22sp"
+            android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
             android:textStyle="bold"
             android:text="@string/app_name"/>
@@ -74,7 +75,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
-        android:src="@drawable/add_role_icon" />
+        android:src="@drawable/add_icon" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/postRoleToFindTeamMember"
         android:layout_width="50dp"
@@ -88,7 +89,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="50dp"
-        android:src="@drawable/add_role_icon" />
+        android:src="@drawable/add_icon" />
 
 </RelativeLayout>
     <com.google.android.material.navigation.NavigationView

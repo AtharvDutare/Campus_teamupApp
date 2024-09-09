@@ -1,4 +1,4 @@
-package com.example.campusteamup;
+package com.example.campusteamup.DashBoard;
 
 import android.os.Bundle;
 
@@ -21,6 +21,7 @@ import com.example.campusteamup.MyModels.UserRoleDetails;
 import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.MyViewModel.RoleViewModel;
+import com.example.campusteamup.R;
 import com.example.campusteamup.databinding.FragmentPostRoleBinding;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -99,8 +100,6 @@ public class Post_Role extends BottomSheetDialogFragment {
                             }
                         });
 
-
-
                 } else {
                     showProgressBar(false);
                     Call_Method.showToast(requireContext(), "Failed to fetch user details");
@@ -152,7 +151,6 @@ public class Post_Role extends BottomSheetDialogFragment {
             UserSignUpDetails userSignUpDetails = documentSnapshot.toObject(UserSignUpDetails.class);
             callback.onCallback(userSignUpDetails);
         }).addOnFailureListener(e -> {
-            Log.e("PostRole Error", e.getMessage());
             Call_Method.showToast(requireContext(), "Something went wrong");
             callback.onCallback(null); // Return null in case of failure
         });

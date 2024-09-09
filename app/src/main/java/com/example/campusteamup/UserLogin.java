@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.telecom.Call;
-import android.os.Build;
-import android.util.Log;
 import android.view.View;
 
+import com.example.campusteamup.DashBoard.MainActivity;
 import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyUtil.Google_SignIn_Methods;
 import com.example.campusteamup.databinding.ActivityUserLoginBinding;
@@ -61,8 +59,8 @@ public class UserLogin extends AppCompatActivity {
 
 
 
-                } catch (ApiException e) {
-                    Log.w("TAG", "Google sign in failed", e);
+                } catch (ApiException ignored) {
+
                 }
             }
         });

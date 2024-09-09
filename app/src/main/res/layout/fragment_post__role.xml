@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="5dp"
-    tools:context=".Post_Role"
+    tools:context=".DashBoard.Post_Role"
     android:background="@drawable/upper_round_corner">
     <RelativeLayout
         android:layout_width="match_parent"

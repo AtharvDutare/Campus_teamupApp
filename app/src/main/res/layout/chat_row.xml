@@ -17,6 +17,7 @@
             android:background="@drawable/rounded_corner_edittext"
             android:textSize="18sp"
             android:id="@+id/otherUser"
+            
             android:layout_alignParentStart="true"
             />
         <TextView
@@ -26,6 +27,7 @@
             android:padding="10sp"
             android:textSize="18sp"
             android:visibility="invisible"
+
             android:id="@+id/currentUser"
             android:backgroundTint="@color/link_color"
             android:background="@drawable/rounded_corner_edittext"

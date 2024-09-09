@@ -101,7 +101,6 @@ public class Personal_Details extends Fragment {
             binding.updatePersonalDetailsBtn.setVisibility(View.INVISIBLE);
             binding.genderInput.setEnabled(false);
 
-            setLightColor();
             showProgressBar(true);
 
             updateDataToDatabase(name , selectedGender , dateOfBirth);
@@ -141,10 +140,6 @@ public class Personal_Details extends Fragment {
                     dateOfBirth = binding.dobInput.getText().toString();
                 }, year, month, day);
         datePickerDialog.show();
-    }
-    public void setLightColor(){
-        binding.nameInput.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack));
-        binding.dobInput.setTextColor(ContextCompat.getColor(requireContext(),R.color.lightBlack));
     }
     public void updateDataToDatabase(String name , String gender , String dob){
         FirebaseUtil.fetchPersonalDetails().set(new Personal_Details_Model(name, gender, dob))
@@ -188,7 +183,6 @@ public class Personal_Details extends Fragment {
                     binding.dobInput.setText(personalDetailsModel.getDob());
                     binding.nameInput.setText(personalDetailsModel.getName());
                     setGenderFromDatabase(personalDetailsModel.getGender());
-                    setLightColor();
                     showProgressBar(false);
                 }
 

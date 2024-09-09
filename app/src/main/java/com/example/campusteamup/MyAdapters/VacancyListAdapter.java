@@ -2,6 +2,7 @@ package com.example.campusteamup.MyAdapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyModels.VacancyModel;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.R;
+import com.example.campusteamup.ViewDetailsAndApply;
 import com.example.campusteamup.databinding.VacancySingleRowBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -36,7 +38,7 @@ public class VacancyListAdapter extends FirestoreRecyclerAdapter<VacancyModel ,V
     protected void onBindViewHolder(@NonNull VacancyListViewHolder holder, int position, @NonNull VacancyModel model) {
 
         if(model.getPostedBy().equals(FirebaseUtil.currentUserUid())){
-            holder.binding.teamName.setText("Team Name : " + model.getTeamName() + "  (You)");
+            holder.binding.teamName.setText("Team Name : " + model.getTeamName());
             holder.binding.deleteVacancy.setVisibility(View.VISIBLE);
         }
 
@@ -51,6 +53,15 @@ public class VacancyListAdapter extends FirestoreRecyclerAdapter<VacancyModel ,V
         holder.binding.deleteVacancy.setOnClickListener(v -> {
             dialog.show();
             handleDeleteRole(position);
+        });
+
+        holder.binding.apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context , ViewDetailsAndApply.class);
+                intent.putExtra("postedBy",model.getPostedBy());
+                context.startActivity(intent);
+            }
         });
 
     }

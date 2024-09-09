@@ -78,6 +78,19 @@
                 android:ellipsize="end"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <TextView
+            android:id="@+id/apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_btn"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/blue_btn"
+            android:text="View Team Details and Apply"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </LinearLayout>

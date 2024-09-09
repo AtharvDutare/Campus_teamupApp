@@ -1,55 +1,47 @@
-package com.example.campusteamup;
+package com.example.campusteamup.DashBoard;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.Manifest;
 
 import com.bumptech.glide.Glide;
 import com.example.campusteamup.Method_Helper.Call_Method;
+import com.example.campusteamup.MyCallBacks.FindEmail;
 import com.example.campusteamup.MyFragments.Coding_Profile_Details;
 import com.example.campusteamup.MyFragments.College_Details;
 import com.example.campusteamup.MyFragments.Personal_Details;
+import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
+import com.example.campusteamup.R;
+import com.example.campusteamup.UserLogin;
+import com.example.campusteamup.UserSignUp;
 import com.example.campusteamup.databinding.ActivityUserProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 public class User_Profile extends AppCompatActivity {
 
@@ -93,7 +85,7 @@ public class User_Profile extends AppCompatActivity {
         logOutYes.setOnClickListener(v->{
             logOutDialog.dismiss();
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(User_Profile.this,UserLogin.class);
+            Intent intent = new Intent(User_Profile.this, UserLogin.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -178,13 +170,25 @@ public class User_Profile extends AppCompatActivity {
     public void saveImageUriToFirestore(String imageUri){
         Map<String , Object>map = new HashMap<>();
         map.put("imageUri" , imageUri);
-        FirebaseUtil.databaseUserImages().set(map)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        binding.progressBar.setVisibility(View.GONE);
-                    }
-                });
+
+
+
+        findEmailIdOfCurrentUser(new FindEmail() {
+            @Override
+            public void onEmailReceived(String email) {
+                if(email != null){
+                    map.put("email",email);
+                    FirebaseUtil.databaseUserImages().set(map)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    binding.progressBar.setVisibility(View.GONE);
+                                }
+                            });
+                }
+            }
+        });
+
     }
     public void uploadImageToStorage(Uri image){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -196,7 +200,7 @@ public class User_Profile extends AppCompatActivity {
                     @Override
                     public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                         binding.progressBar.setVisibility(View.VISIBLE);
-
+                        Call_Method.showToast(User_Profile.this,"Uploading...");
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -295,5 +299,29 @@ public class User_Profile extends AppCompatActivity {
             binding.collegeTextview.setTypeface(null);
             binding.codingTextview.setTypeface(null,Typeface.BOLD);
         }
+    }
+    public void findEmailIdOfCurrentUser(FindEmail callback){
+        FirebaseUtil.findingMailId().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    UserSignUpDetails details = documentSnapshot.toObject(UserSignUpDetails.class);
+                    if(details != null){
+                        String email = details.getEmail();
+                        if(email == null || email.isEmpty()){
+                            callback.onEmailReceived(null);
+                        }
+                        else {
+                            callback.onEmailReceived(email);
+                        }
+                    }
+                    else {
+                        callback.onEmailReceived(null);
+                    }
+
+                }
+            }
+        });
     }
 }

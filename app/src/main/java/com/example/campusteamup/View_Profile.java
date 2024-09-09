@@ -27,7 +27,7 @@ public class View_Profile extends AppCompatActivity {
     FragmentManager fragmentManager;
     String userId , userLinkedIn , userImage , userName;
     Fragment fragmentToLoad ;
-    ViewProfile_ViewModel viewProfileViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,15 +67,15 @@ public class View_Profile extends AppCompatActivity {
                         DocumentSnapshot snapshot = task.getResult();
                         if(snapshot.exists()){
                             userImage = snapshot.getString("imageUri");
-                            binding.progressBar.setVisibility(View.GONE);
+                            if(userImage != null)
                             Glide.with(View_Profile.this).load(userImage).into(binding.viewImage);
-                        }
 
+                        }
                     }
+
                 }
             });
-
-
+            binding.progressBar.setVisibility(View.GONE);
         }
 
 

@@ -66,6 +66,7 @@ public class Chat extends AppCompatActivity {
             }
         });
 
+
     }
     public void getOrCreateChatRoomModel(String chatRoomId){
         FirebaseChatUtil.getChatRoomReference(chatRoomId).get()
@@ -85,7 +86,13 @@ public class Chat extends AppCompatActivity {
     }
     public void initializeUserIds(){
         otherUserId = Objects.requireNonNull(getIntent().getStringExtra("otherUserId"));
-        otherUserImage = Objects.requireNonNull(getIntent().getStringExtra("otherUserImage"));
+        try{
+            otherUserImage = Objects.requireNonNull(getIntent().getStringExtra("otherUserImage"));
+        }
+        catch (Exception ignored){
+
+        }
+
         otherUserName = Objects.requireNonNull(getIntent().getStringExtra("otherUserName"));
         currentUserId = FirebaseUtil.currentUserUid();
 

@@ -1,9 +1,5 @@
 package com.example.campusteamup;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -11,14 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Build;
-import android.telecom.Call;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
+import com.example.campusteamup.DashBoard.MainActivity;
 import com.example.campusteamup.Method_Helper.Call_Method;
-import com.example.campusteamup.MyCallBacks.CheckUserExits;
 import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.MyUtil.Google_SignIn_Methods;
@@ -31,17 +25,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthCredential;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class UserSignUp extends AppCompatActivity {
 ActivityUserSignUpBinding signUpBinding ;
@@ -131,6 +120,9 @@ ActivityResultLauncher<Intent> resultLauncher;
                         showProgressBar(false);
                         if(e instanceof FirebaseAuthUserCollisionException){
                             Call_Method.showToast(UserSignUp.this,"Account with this email already exists. Please sign in");
+                        }
+                        else if(e instanceof FirebaseNetworkException){
+                            Call_Method.showToast(UserSignUp.this , "Network Error");
                         }
                         else{
                             Call_Method.showToast(UserSignUp.this,"Sign Up failed");

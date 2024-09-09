@@ -22,12 +22,18 @@
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/circular_image">
+            <ProgressBar
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:id="@+id/progressBar"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/userProfileImage"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_icon"/>
+                android:background="@drawable/profile_icon"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -39,7 +45,6 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            android:text="User Name"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -52,7 +57,6 @@
             android:id="@+id/userEmail"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            android:text="Email"
             android:textColor="@color/off_white"
             android:textSize="14sp"
             android:textStyle="bold" />

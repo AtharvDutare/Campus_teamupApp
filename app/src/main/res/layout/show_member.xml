@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    android:background="@drawable/rounded_corner_edittext">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/teamLeaderLayout"
+        android:gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="40dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/teamMemberProfile"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:padding="6dp"
+            android:layout_margin="10dp"
+            android:id="@+id/memberName"
+            android:backgroundTint="@color/off_white"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@drawable/rounded_corner_edittext" />
+
+    </LinearLayout>
+</RelativeLayout>

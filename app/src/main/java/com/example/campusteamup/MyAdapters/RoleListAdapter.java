@@ -45,48 +45,44 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
     @Override
     protected void onBindViewHolder(@NonNull RoleListViewHolder holder, int position, @NonNull UserRoleDetails model) {
 
-        //setting name of user
-        if(FirebaseUtil.currentUserUid().equals(model.getUserId())){
-            holder.binding.userName.setText("You");
-            holder.binding.deleteRole.setVisibility(View.VISIBLE);
+            String currentUserUid = FirebaseUtil.currentUserUid();
+            if (currentUserUid != null && currentUserUid.equals(model.getUserId())) {
+                holder.binding.userName.setText("You");
+                holder.binding.deleteRole.setVisibility(View.VISIBLE);
+            } else if (model.getUserId() != null) {
+                holder.binding.deleteRole.setVisibility(View.GONE);
+                holder.binding.userName.setText(model.getUserSignUpDetails().getUserName());
+            }
+            // setting role
+            holder.binding.userRole.setText("Role : " + model.getRoleName());
 
+            //set image of user
 
-        }
-        else {
-            holder.binding.deleteRole.setVisibility(View.GONE);
-            holder.binding.userName.setText( model.getUserSignUpDetails().getUserName());
-        }
-        // setting role
-        holder.binding.userRole.setText("Role : " + model.getRoleName());
+            setImageOfUser(holder.binding.imageOfUser , model.getUserId() , holder);
 
-        //set image of user
+            // deleting role by user
+            holder.binding.deleteRole.setOnClickListener(v -> {
+                deleteDialog.show();
+                handleDialogBtnClick( position );
+            });
 
-        setImageOfUser(holder.binding.imageOfUser , model.getUserId());
+            // when no data to show because of low network ,  prevent user from view others profile
+            if(model.getUserId() == null){
+                holder.binding.viewProfile.setVisibility(View.GONE);
+            }
 
-        // deleting role by user
-        holder.binding.deleteRole.setOnClickListener(v -> {
-            deleteDialog.show();
-            handleDialogBtnClick( position );
-        });
+            // view the profile of user
+            holder.binding.viewProfile.setOnClickListener(v->{
+                Intent viewProfile = new Intent(context , View_Profile.class);
+                viewProfile.putExtra("userId", model.getUserId());
+                viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
+                viewProfile.putExtra("userImage",imageOfUser);
+                Log.d("Image in adapter",imageOfUser);
 
-        // when no data to show because of low network ,  prevent user from view others profile
-        if(model.getUserId() == null){
-            holder.binding.viewProfile.setVisibility(View.GONE);
-        }
+                viewProfile.putExtra("userName",model.getUserSignUpDetails().getUserName());
 
-        // view the profile of user
-        holder.binding.viewProfile.setOnClickListener(v->{
-            Intent viewProfile = new Intent(context , View_Profile.class);
-            viewProfile.putExtra("userId", model.getUserId());
-            viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
-            viewProfile.putExtra("userImage",imageOfUser);
-            Log.d("Image in adapter",imageOfUser);
-
-            viewProfile.putExtra("userName",model.getUserSignUpDetails().getUserName());
-
-            context.startActivity(viewProfile);
-        });
-
+                context.startActivity(viewProfile);
+            });
 
     }
 
@@ -134,7 +130,9 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
 
 
     }
-    public void setImageOfUser(ImageView imageView , String userId){
+    public void setImageOfUser(ImageView imageView , String userId , RoleListViewHolder holder){
+        holder.binding.loadingImage.setVisibility(View.VISIBLE);
+        Log.d("User id",userId+ " ");
         FirebaseUtil.differentUserImages(userId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -143,14 +141,14 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
                             DocumentSnapshot documentSnapshot = task.getResult();
                             if(documentSnapshot.exists()){
                                 String imageUri = documentSnapshot.getString("imageUri");
-                                if(imageUri != null && !imageUri.isEmpty()){
+                                if(imageUri != null && !imageUri.isEmpty()) {
                                     imageOfUser = imageUri;
                                     Glide.with(context).load(imageUri).into(imageView);
                                 }
-
-
                             }
                         }
+
+                        holder.binding.loadingImage.setVisibility(View.GONE);
                     }
                 });
 

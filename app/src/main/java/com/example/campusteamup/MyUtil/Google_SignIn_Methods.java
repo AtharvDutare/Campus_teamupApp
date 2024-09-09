@@ -50,7 +50,7 @@ public class Google_SignIn_Methods {
 
 
                             } else {
-                                Call_Method.showToast(context, "Sign in failed");
+                                Call_Method.showToast(context, "Network error");
                             }
                         }
                     });

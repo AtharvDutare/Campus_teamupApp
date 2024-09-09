@@ -16,6 +16,9 @@ public class FirebaseUtil {
     public static DocumentReference currentUserDetails(){
         return FirebaseFirestore.getInstance().collection("users").document(currentUserUid());
     }
+    public static DocumentReference findUserWithUserId(String userId){
+        return FirebaseFirestore.getInstance().collection("users").document(userId);
+    }
     public static CollectionReference sendRoleDetails(){
         return FirebaseFirestore.getInstance().collection("roles");
     }
@@ -59,4 +62,20 @@ public class FirebaseUtil {
         return FirebaseFirestore.getInstance().collection("roles").orderBy("roleName").startAt(rolesToSearch).endAt(rolesToSearch +  "\uf8ff");
     }
 
+
+    public static DocumentReference uploadTeamDetails(){
+        return FirebaseFirestore.getInstance().collection("teamDetails").document(currentUserUid());
+    }
+    // fetch team member details also if other added the user before
+
+    public static CollectionReference findTeamDetails(){
+        return FirebaseFirestore.getInstance().collection("teamDetails");
+    }
+
+    public static DocumentReference findingMailId(){
+        return FirebaseFirestore.getInstance().collection("users").document(currentUserUid());
+    }
+    public static Query findImageByEmail(){
+        return FirebaseFirestore.getInstance().collection("userImages");
+    }
 }
