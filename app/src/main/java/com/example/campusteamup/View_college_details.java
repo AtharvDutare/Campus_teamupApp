@@ -53,6 +53,9 @@ public class View_college_details extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (!isAdded())
+                            return ;
+
                         if(task.isSuccessful() && task.getResult() != null){
                             Data_binding_college_details collegeDetails  = task.getResult().toObject(Data_binding_college_details.class);
                             if(collegeDetails != null ){

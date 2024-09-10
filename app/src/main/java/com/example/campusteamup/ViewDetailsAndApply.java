@@ -42,6 +42,7 @@ public class ViewDetailsAndApply extends AppCompatActivity {
     ActivityViewDetailsAndApplyBinding binding;
     String userPostedId ;
     List<ImageView> imageListOfMember;
+
     Map<String , ImageView>allEmailAndImage;
 
     @Override
@@ -50,13 +51,16 @@ public class ViewDetailsAndApply extends AppCompatActivity {
         binding = ActivityViewDetailsAndApplyBinding.inflate(getLayoutInflater());
 
         imageListOfMember = new ArrayList<>();
+
         allEmailAndImage = new HashMap<>();
+
 
         setContentView(binding.getRoot());
         setToolbarAndActionBar();
         findUserIdWhoPosted();
         fetchTeamDetailsByEmailId();
     }
+
 
     public void setToolbarAndActionBar() {
         Call_Method.lightActionBar(getWindow());
@@ -183,6 +187,9 @@ public class ViewDetailsAndApply extends AppCompatActivity {
                                         else {
                                             allEmailAndImage.get(email).setImageResource(R.drawable.profile_icon);
                                         }
+                                    }
+                                    else {
+                                        allEmailAndImage.get(email).setImageResource(R.drawable.profile_icon);
                                     }
                                 }
                             }

@@ -73,7 +73,7 @@ public class Post_Role extends BottomSheetDialogFragment {
 
         if (areUrlValid(linkedInUrl, codingUrl) && isRoleSelected(selectedRole)) {
             DocumentReference documentReference = FirebaseUtil.currentUserDetails();
-            Log.d("PostRole", "Document Reference: " + documentReference.getPath());
+            
             showProgressBar(true);
             fetchUserSignUpDetailsAndPostRole(documentReference, linkedInUrl, codingUrl, userSignUpDetails -> {
                 if (userSignUpDetails != null) {

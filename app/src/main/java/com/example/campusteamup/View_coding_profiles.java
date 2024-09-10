@@ -43,6 +43,9 @@ public class View_coding_profiles extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (!isAdded())
+                            return;
+
                         if(task.isSuccessful() && task.getResult() != null){
                             Data_binding_coding_profiles codingProfiles  = task.getResult().toObject(Data_binding_coding_profiles.class);
                             if(codingProfiles != null ){

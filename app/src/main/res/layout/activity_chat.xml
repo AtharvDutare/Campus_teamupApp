@@ -12,10 +12,11 @@
         android:id="@+id/toolBar">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_centerVertical="true"
             android:id="@+id/backToViewProfile"
+            android:layout_marginStart="10dp"
             android:src="@drawable/arrow_icon"
             />
         <com.google.android.material.imageview.ShapeableImageView
