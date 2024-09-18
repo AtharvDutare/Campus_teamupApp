@@ -6,15 +6,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyAdapters.ChatAdapter;
 import com.example.campusteamup.MyModels.ChatMessageModel;
 import com.example.campusteamup.MyModels.ChatRoomModel;
+import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseChatUtil;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.MyViewModel.ViewProfile_ViewModel;
@@ -23,15 +27,19 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import org.w3c.dom.Document;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 public class Chat extends AppCompatActivity {
@@ -40,7 +48,7 @@ public class Chat extends AppCompatActivity {
     String otherUserId , currentUserId ,otherUserImage , otherUserName;
     ChatRoomModel chatRoomModel;
     ChatAdapter adapter;
-    ViewProfile_ViewModel viewProfileViewModel;
+    String otherUserFCM;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +71,28 @@ public class Chat extends AppCompatActivity {
             String message = binding.messageInput.getText().toString().trim();
             if(!message.isEmpty()){
                 sendMessageToUser(message);
+
+                Log.d("FCM","Message Sent");
+
+                fetchFCMWithUserId(task1 -> {
+                    if (task1.isSuccessful()) {
+                        otherUserFCM = task1.getResult();
+                        if(otherUserFCM != null){
+                            SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+                            String currentUserName = sharedPreferences.getString("userName","");
+
+                            Log.d("FCM","Current User Name" + currentUserName);
+                            Log.d("FCM", "Sending Notification");
+                            NotificationHelper.sendNotification(otherUserFCM, message, currentUserName);
+                        }
+                        else{
+                            Log.d("FCM","FCM found null");
+                        }
+                    } else {
+                        Log.d("FCM", "Other user FCM error");
+                    }
+
+                }, otherUserId);
             }
         });
 
@@ -86,6 +116,7 @@ public class Chat extends AppCompatActivity {
     }
     public void initializeUserIds(){
         otherUserId = Objects.requireNonNull(getIntent().getStringExtra("otherUserId"));
+
         try{
             otherUserImage = Objects.requireNonNull(getIntent().getStringExtra("otherUserImage"));
         }
@@ -95,6 +126,7 @@ public class Chat extends AppCompatActivity {
 
         otherUserName = Objects.requireNonNull(getIntent().getStringExtra("otherUserName"));
         currentUserId = FirebaseUtil.currentUserUid();
+
 
     }
 
@@ -107,6 +139,7 @@ public class Chat extends AppCompatActivity {
 
 
         ChatMessageModel chatMessageModel = new ChatMessageModel(message , currentUserId , Timestamp.now());
+
 
         FirebaseChatUtil.getChatRoomMessageReference(chatRoomId).add(chatMessageModel)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -150,4 +183,34 @@ public class Chat extends AppCompatActivity {
         if(otherUserName != null)
             binding.otherUserName.setText(otherUserName);
     }
+    public void fetchFCMWithUserId(OnCompleteListener<String>listener , String otherUserId){
+        FirebaseUtil.saveFCM(otherUserId)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        TaskCompletionSource<String>taskCompletionSource = new TaskCompletionSource<>();
+
+                        if (task.isSuccessful() && task.getResult() != null){
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot != null){
+                                otherUserFCM = snapshot.getString("fcm_TOKEN");
+
+                                taskCompletionSource.setResult(otherUserFCM);
+
+                                Log.d("FCM","Other user FCM fetched " + otherUserFCM);
+                            }
+                            else {
+                                Log.d("FCM","FCM snapshot is null");
+                                taskCompletionSource.setException(new Exception("FCM snapsot is null"));
+                            }
+                        }
+                        else {
+                            Log.d("FCM","Task fail to get other user FCM");
+                            taskCompletionSource.setException(new Exception("Task fail to get other user FCM"));
+                        }
+                        listener.onComplete(taskCompletionSource.getTask());
+                    }
+                });
+    }
+
 }

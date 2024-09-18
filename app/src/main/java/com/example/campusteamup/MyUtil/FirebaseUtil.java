@@ -78,4 +78,7 @@ public class FirebaseUtil {
     public static Query findImageByEmail(){
         return FirebaseFirestore.getInstance().collection("userImages");
     }
+    public static DocumentReference saveFCM(String userId){
+        return FirebaseFirestore.getInstance().collection("fcmtoken").document(userId);
+    }
 }

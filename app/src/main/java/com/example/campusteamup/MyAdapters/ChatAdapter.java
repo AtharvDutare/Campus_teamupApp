@@ -15,7 +15,11 @@ import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.databinding.ChatRowBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<ChatMessageModel , ChatAdapter.ChatViewHolder> {
 
@@ -30,12 +34,19 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<ChatMessageModel , Cha
         if(model.getSenderId().equals(FirebaseUtil.currentUserUid())){
             holder.binding.currentUser.setVisibility(View.VISIBLE);
             holder.binding.otherUser.setVisibility(View.GONE);
+            holder.binding.messageTimeOfOther.setVisibility(View.GONE);
             holder.binding.currentUser.setText(model.getMessage());
+
+            holder.binding.messageTimeOfCurrent.setVisibility(View.VISIBLE);
+            holder.binding.messageTimeOfCurrent.setText(formatDate(model.getTimeWhenMessageSent()));
         }
         else{
             holder.binding.otherUser.setVisibility(View.VISIBLE);
             holder.binding.currentUser.setVisibility(View.GONE);
             holder.binding.otherUser.setText(model.getMessage());
+            holder.binding.messageTimeOfOther.setVisibility(View.VISIBLE);
+            holder.binding.messageTimeOfOther.setText(formatDate(model.getTimeWhenMessageSent()));
+
         }
     }
 
@@ -54,5 +65,12 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<ChatMessageModel , Cha
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+    public String formatDate(Timestamp timestamp){
+
+        Date date = timestamp.toDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+        String currentTime = dateFormat.format(date);
+        return currentTime;
     }
 }

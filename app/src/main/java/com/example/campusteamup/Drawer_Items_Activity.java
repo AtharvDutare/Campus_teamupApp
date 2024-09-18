@@ -35,7 +35,7 @@ public class Drawer_Items_Activity extends AppCompatActivity {
         String fragmentTeamDetails = getIntent().getStringExtra("team_details");
         String fragmentNotification = getIntent().getStringExtra("notification_details");
 
-        if(fragmentNotification == null){  // means that framenetTeamDetails is set
+        if(fragmentNotification == null){  // means that fragmentTeamDetails is set
             fragmentToLoad = new Team_Details();
             fragmentManager.beginTransaction()
                     .add(R.id.mainFrameLayout,fragmentToLoad)

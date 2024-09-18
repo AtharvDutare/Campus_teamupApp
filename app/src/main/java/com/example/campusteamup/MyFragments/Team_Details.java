@@ -1,11 +1,15 @@
 package com.example.campusteamup.MyFragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.SavedStateHandle;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import java.util.Map;
 public class Team_Details extends Fragment {
     FragmentTeamDetailsBinding binding ;
     List<EditText> listOfMemberDetails ;
+    String currentUserEmail , currentUserName ;
 
     Handler handler;
     public Team_Details() {
@@ -47,7 +52,16 @@ public class Team_Details extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentTeamDetailsBinding.inflate(inflater);
 
+        SharedPreferences preferences = requireContext().getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+
+        currentUserEmail = preferences.getString("userEmail","");
+        currentUserName = preferences.getString("userName","");
+
         listOfMemberDetails = new ArrayList<>();
+
+        // i am adding current user as a member by default
+
+        addCurrentUserAsMember();
 
         fetchTeamMemberDetails();
 
@@ -99,15 +113,24 @@ public class Team_Details extends Fragment {
 
                 int childCount = binding.memberList.getChildCount();
 
+
+                Log.d("Team","Total child "+ childCount);
+
+                if(childCount == 2){
+                    binding.removeMember.setVisibility(View.GONE);
+                }
+
                 if(childCount > 0){
                     binding.memberList.removeViewAt(childCount-1);
                     listOfMemberDetails.remove(listOfMemberDetails.size()-1);
                     listOfMemberDetails.remove(listOfMemberDetails.size()-1);
 
-                    if(listOfMemberDetails.size() == 0){
+                    if(listOfMemberDetails.size() == 1){
+                        Log.d("Team","size is 1 so add member visible and remove member gone");
                         binding.addMember.setVisibility(View.VISIBLE);
                         binding.removeMember.setVisibility(View.GONE);
                     }
+
 
                 }
                 else{
@@ -121,6 +144,7 @@ public class Team_Details extends Fragment {
 
     public void addMember(){
         binding.updateDetails.setVisibility(View.VISIBLE);
+
         binding.removeMember.setVisibility(View.VISIBLE);
 
         View view = getLayoutInflater().inflate(R.layout.add_member,null , false);
@@ -161,10 +185,9 @@ public class Team_Details extends Fragment {
     }
     public void fetchTeamMemberDetails(){
         //  if user is already in team showing the team details that user is in
-        currentUserEmail(new FindEmail() {
-            @Override
-            public void onEmailReceived(String email) {
-                if(email != null && !email.trim().isEmpty()){
+
+
+
                     FirebaseUtil.findTeamDetails().get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
@@ -183,7 +206,7 @@ public class Team_Details extends Fragment {
                                                 totalMember = listModel.getTotalMember();
                                                 if(totalMember != null){
                                                     for(Team_Members_Model member : totalMember){
-                                                        if(member.getEmail().equals(email)){
+                                                        if(member.getEmail().equals(currentUserEmail)){
                                                             found = true;
                                                             break;
                                                         }
@@ -195,44 +218,43 @@ public class Team_Details extends Fragment {
                                         binding.progressBar.setVisibility(View.INVISIBLE);
                                         if(found)
                                         {
+                                            Log.d("AddTeamDetails","Member Details Found");
                                            showTeamDetailsOfCurrentUser(totalMember);
+                                        }
+                                        else{
+                                            Log.d("AddTeamDetails","No Member Details Found");
                                         }
                                     }
                                 }
                             });
                 }
 
-            }
-        });
-    }
-    public void currentUserEmail(FindEmail callBack){
-        FirebaseUtil.currentUserDetails().get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful() && task.getResult() != null){
-                            Log.d("Task Success","Success");
-                            UserSignUpDetails signUpDetails = task.getResult().toObject(UserSignUpDetails.class);
-                            callBack.onEmailReceived(signUpDetails.getEmail());
 
-                        }
-                        else {
-                            Log.d("Task Unsuccessfull","Unsuccess");
-                            callBack.onEmailReceived(null);
-                        }
-                    }
-                });
-    }
 
     public void showTeamDetailsOfCurrentUser(List<Team_Members_Model>totalMember){
-        listOfMemberDetails.clear();
-        binding.memberList.removeAllViews();
+
+//        binding.memberList.removeAllViews();
+
         for (Team_Members_Model member : totalMember){
+            Log.d("AddTeamDetails","Member fetched");
+
+
+            if (member.getEmail().equals(currentUserEmail)) {
+                continue;
+            }
             addMember();
             listOfMemberDetails.get(listOfMemberDetails.size()-1).setText(member.getEmail());
             listOfMemberDetails.get(listOfMemberDetails.size()-2).setText(member.getName());
         }
 
+    }
+    public void addCurrentUserAsMember(){
+        addMember();
+        listOfMemberDetails.get(0).setText("You");
+        listOfMemberDetails.get(1).setText(currentUserEmail);
+        listOfMemberDetails.get(0).setInputType(InputType.TYPE_NULL);
+        listOfMemberDetails.get(1).setInputType(InputType.TYPE_NULL);
+        binding.removeMember.setVisibility(View.GONE);
     }
 
 }

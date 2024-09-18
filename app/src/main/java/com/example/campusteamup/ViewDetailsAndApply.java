@@ -188,9 +188,6 @@ public class ViewDetailsAndApply extends AppCompatActivity {
                                             allEmailAndImage.get(email).setImageResource(R.drawable.profile_icon);
                                         }
                                     }
-                                    else {
-                                        allEmailAndImage.get(email).setImageResource(R.drawable.profile_icon);
-                                    }
                                 }
                             }
                         }

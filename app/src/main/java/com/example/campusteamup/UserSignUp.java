@@ -70,6 +70,10 @@ ActivityResultLauncher<Intent> resultLauncher;
                     Log.w("TAG", "Google sign in failed", e);
                 }
             }
+            else {
+                Call_Method.showToast(this , "Google Sign-in is in Development \n Sorry for Inconvenience Caused");
+                Log.d("Result","Result not ok");
+            }
         });
         signUpBinding.signInGoogle.setOnClickListener(v->{
             Intent signInIntent = googleSignInClient.getSignInIntent();

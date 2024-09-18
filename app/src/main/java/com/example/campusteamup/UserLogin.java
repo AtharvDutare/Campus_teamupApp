@@ -1,11 +1,15 @@
 package com.example.campusteamup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
+import android.util.Log;
 import android.view.View;
 
 import com.example.campusteamup.DashBoard.MainActivity;
@@ -29,7 +33,37 @@ public class UserLogin extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result-> {
+            Log.d("Result",result.getResultCode() + " ");
+            if(result.getResultCode() == RESULT_OK){
+                try {
+                    Log.d("Result","Result Ok");
+                    Intent data = result.getData();
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                    Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this );
+                    startActivity(new Intent(UserLogin.this , MainActivity.class));
+                    finish();
+
+
+
+
+                } catch (ApiException ignored) {
+
+                }
+            }
+            else {
+                Call_Method.showToast(this , "Google Sign-in is in Development \n Sorry for Inconvenience Caused");
+                Log.d("Result","Result not ok");
+            }
+        });
+
+
         super.onCreate(savedInstanceState);
+
         userLoginBinding = ActivityUserLoginBinding.inflate(getLayoutInflater());
         setContentView(userLoginBinding.getRoot());
 
@@ -39,36 +73,23 @@ public class UserLogin extends AppCompatActivity {
             gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail().build();
-            googleSignInClient  = GoogleSignIn.getClient(this,gso);
+            googleSignInClient  = GoogleSignIn.getClient(UserLogin.this,gso);
 
 
 
 
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == RESULT_OK){
-                try {
-                Intent data = result.getData();
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                    Google_SignIn_Methods.authenticateWithFirebase(firebaseAuth , account.getIdToken() , this );
-                        startActivity(new Intent(UserLogin.this , MainActivity.class));
-                        finish();
-
-
-
-
-                } catch (ApiException ignored) {
-
-                }
-            }
-        });
 
         try{
             userLoginBinding.loginWithGoogle.setOnClickListener(v -> {
                 Intent intent = googleSignInClient.getSignInIntent();
-                resultLauncher.launch(intent);
+
+                try {
+                    resultLauncher.launch(intent);
+                    Log.d("GoogleSignIn", "Launching Google Sign-In intent");
+                } catch (Exception e) {
+                    Log.e("GoogleSignInError", "Error launching sign-in intent", e);
+                }
             });
         }
         catch (Exception e){
