@@ -1,5 +1,7 @@
 package com.example.campusteamup.DashBoard;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -75,10 +77,13 @@ public class Post_Role extends BottomSheetDialogFragment {
             DocumentReference documentReference = FirebaseUtil.currentUserDetails();
             
             showProgressBar(true);
-            fetchUserSignUpDetailsAndPostRole(documentReference, linkedInUrl, codingUrl, userSignUpDetails -> {
-                if (userSignUpDetails != null) {
+                    SharedPreferences preferences = requireActivity().getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+                    String userImage = preferences.getString("userImage","noImage");
+                    String userName = preferences.getString("userName","User");
+                    Log.d("PostRole",userImage);
+                    Log.d("PostRole",userName);
 
-                    UserRoleDetails userRoleDetails = new UserRoleDetails(selectedRole, linkedInUrl, codingUrl, FirebaseUtil.currentUserUid(), userSignUpDetails);
+                    UserRoleDetails userRoleDetails = new UserRoleDetails(selectedRole, linkedInUrl, codingUrl, FirebaseUtil.currentUserUid(), userName , userImage);
 
                         checkTotalRoles(new CountRoles() {
                             @Override
@@ -101,11 +106,8 @@ public class Post_Role extends BottomSheetDialogFragment {
                             }
                         });
 
-                } else {
-                    showProgressBar(false);
-                    Call_Method.showToast(requireContext(), "Failed to fetch user details");
-                }
-            });
+
+
         } else if (!isRoleSelected(selectedRole)) {
             fragmentPostRoleBinding.roleListSpinner.requestFocus();
         }
@@ -147,15 +149,7 @@ public class Post_Role extends BottomSheetDialogFragment {
         return true;
     }
 
-    public void fetchUserSignUpDetailsAndPostRole(DocumentReference documentReference, String linkedInUrl, String codingUrl, UserSignUpDetailsCallback callback) {
-        documentReference.get().addOnSuccessListener(documentSnapshot -> {
-            UserSignUpDetails userSignUpDetails = documentSnapshot.toObject(UserSignUpDetails.class);
-            callback.onCallback(userSignUpDetails);
-        }).addOnFailureListener(e -> {
-            Call_Method.showToast(requireContext(), "Something went wrong");
-            callback.onCallback(null); // Return null in case of failure
-        });
-    }
+
 
     public void uploadRoleData(UserRoleDetails details) {
         FirebaseUtil.sendRoleDetails().add(details)

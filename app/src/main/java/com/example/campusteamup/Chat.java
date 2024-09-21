@@ -50,12 +50,17 @@ public class Chat extends AppCompatActivity {
     ChatRoomModel chatRoomModel;
     ChatAdapter adapter;
     String otherUserFCM;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Call_Method.lightActionBar(getWindow());
+         preferences = getSharedPreferences("Other_User",Context.MODE_PRIVATE);
+         editor = preferences.edit();
 
 
 
@@ -124,6 +129,10 @@ public class Chat extends AppCompatActivity {
     }
     public void initializeUserIds(){
         otherUserId = Objects.requireNonNull(getIntent().getStringExtra("otherUserId"));
+         preferences = getSharedPreferences("Other_User",Context.MODE_PRIVATE);
+         editor = preferences.edit();
+        editor.putString("otherUserId",otherUserId+"");
+        editor.apply();
 
         try{
             otherUserImage = Objects.requireNonNull(getIntent().getStringExtra("otherUserImage"));
@@ -227,4 +236,14 @@ public class Chat extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+
+        //removing active chat reference
+
+        editor.putString("otherUserId","");
+        editor.apply();
+    }
 }

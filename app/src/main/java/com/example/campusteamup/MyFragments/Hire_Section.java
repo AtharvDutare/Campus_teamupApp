@@ -40,6 +40,7 @@ public class Hire_Section extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHireSectionBinding.inflate(inflater);
 
+
             CollectionReference allRoleData = FirebaseUtil.getAllUserRoles();
 
             FirestoreRecyclerOptions<UserRoleDetails> option = new FirestoreRecyclerOptions.Builder<UserRoleDetails>()
@@ -65,6 +66,9 @@ public class Hire_Section extends Fragment {
                     binding.roleRecyclerView.setVisibility(View.VISIBLE);
                 }
             });
+
+
+
 
 
 

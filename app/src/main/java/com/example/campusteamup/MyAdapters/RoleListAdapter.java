@@ -51,14 +51,14 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
                 holder.binding.deleteRole.setVisibility(View.VISIBLE);
             } else if (model.getUserId() != null) {
                 holder.binding.deleteRole.setVisibility(View.GONE);
-                holder.binding.userName.setText(model.getUserSignUpDetails().getUserName());
+                holder.binding.userName.setText(model.getUserName());
             }
             // setting role
             holder.binding.userRole.setText("Role : " + model.getRoleName());
 
             //set image of user
 
-            setImageOfUser(holder.binding.imageOfUser , model.getUserId() , holder);
+            setImageOfUser(holder.binding.imageOfUser ,model.getUserImage() , holder);
 
             // deleting role by user
             holder.binding.deleteRole.setOnClickListener(v -> {
@@ -78,7 +78,7 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
                 viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
 
                 viewProfile.putExtra("userImage",imageOfUser);
-                viewProfile.putExtra("userName",model.getUserSignUpDetails().getUserName());
+                viewProfile.putExtra("userName",model.getUserName());
 
                 context.startActivity(viewProfile);
             });
@@ -129,28 +129,13 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
 
 
     }
-    public void setImageOfUser(ImageView imageView , String userId , RoleListViewHolder holder){
-        holder.binding.loadingImage.setVisibility(View.VISIBLE);
-        Log.d("User id",userId+ " ");
-        FirebaseUtil.differentUserImages(userId).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            if(documentSnapshot.exists()){
-                                String imageUri = documentSnapshot.getString("imageUri");
-                                if(imageUri != null && !imageUri.isEmpty()) {
-                                    imageOfUser = imageUri;
-                                    Glide.with(context).load(imageUri).into(imageView);
-                                }
-                            }
-                        }
-
-                        holder.binding.loadingImage.setVisibility(View.GONE);
-                    }
-                });
-
+    public void setImageOfUser(ImageView imageView , String userImage , RoleListViewHolder holder){
+        if(userImage.equals("noImage")){
+            imageView.setImageResource(R.drawable.profile_icon);
+        }
+        else{
+            Glide.with(context).load(userImage).into(imageView);
+        }
     }
 
 }

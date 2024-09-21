@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseAuth.AuthStateListener authStateListener;
     SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             Call_Method.lightActionBar(getWindow());  // making actionbar light so that date , battery becomes visible
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+         sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
 
@@ -231,23 +232,9 @@ public class MainActivity extends AppCompatActivity {
             ProgressBar progressBar = headerView.findViewById(R.id.progressBar);
             progressBar.setVisibility(View.VISIBLE);
 
-            FirebaseUtil.databaseUserImages().get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot snapshot = task.getResult();
-
-                                if (snapshot != null && snapshot.exists()) {
-                                    String imageUri = snapshot.getString("imageUri");
-
-                                    if (imageUri != null && !imageUri.isEmpty())
-                                        loadImage(imageUri, userProfile, progressBar);
-                                }
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
+            String imageUri = sharedPreferences.getString("userImage","noImage");
+            loadImage(imageUri, userProfile, progressBar);
+            progressBar.setVisibility(View.GONE);
         } catch (Exception ignored) {
 
         }
@@ -256,7 +243,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadImage(String imageUri, ImageView userProfile, ProgressBar progressBar) {
-        Glide.with(this).load(imageUri).into(userProfile);
+        if(imageUri.equals("noImage"))
+            userProfile.setImageResource(R.drawable.profile_icon);
+        else{
+            Glide.with(this).load(imageUri).into(userProfile);
+        }
         progressBar.setVisibility(View.GONE);
     }
 

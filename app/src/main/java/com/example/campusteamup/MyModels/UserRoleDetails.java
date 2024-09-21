@@ -1,27 +1,22 @@
 package com.example.campusteamup.MyModels;
 
 public class UserRoleDetails {
-    private String roleName , linkedInUrl , codingProfileUrl,userId;
-    private  UserSignUpDetails userSignUpDetails;
+    private String roleName , linkedInUrl , codingProfileUrl,userId , userName, userImage;
 
-    public UserRoleDetails(String roleName, String linkedInUrl, String codingProfileUrl,String userId,UserSignUpDetails userSignUpDetails) {
+
+    public UserRoleDetails(String roleName, String linkedInUrl, String codingProfileUrl,String userId, String userName , String userImage) {
         this.roleName = roleName;
         this.linkedInUrl = linkedInUrl;
         this.codingProfileUrl = codingProfileUrl;
         this.userId = userId;
-        this.userSignUpDetails = userSignUpDetails;
+        this.userName = userName;
+        this.userImage = userImage;
     }
 
     public UserRoleDetails() {
     }
 
-    public UserSignUpDetails getUserSignUpDetails() {
-        return userSignUpDetails;
-    }
 
-    public void setUserSignUpDetails(UserSignUpDetails userSignUpDetails) {
-        this.userSignUpDetails = userSignUpDetails;
-    }
 
     public String getUserId() {
         return userId;
@@ -53,5 +48,21 @@ public class UserRoleDetails {
 
     public void setCodingProfileUrl(String codingProfileUrl) {
         this.codingProfileUrl = codingProfileUrl;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }

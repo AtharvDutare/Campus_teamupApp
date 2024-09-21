@@ -56,6 +56,8 @@ public class User_Profile extends AppCompatActivity {
     public static final String CODING_PROFILE_FRAGMENT_TAG = "CodingProfileDetails";
     public ActivityResultLauncher<String> requestPermissionLauncher;
     Uri selectedImage ;
+    String currentUserImageUri;
+    SharedPreferences sharedPreferences;
     public ActivityResultLauncher<Intent> pickImageLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,9 @@ public class User_Profile extends AppCompatActivity {
 
 
 
-
             binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
+            sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
             Call_Method.lightActionBar(getWindow());
 
             setImageOfUser();
@@ -171,26 +173,27 @@ public class User_Profile extends AppCompatActivity {
         pickImageLauncher.launch(intent);
     }
     public void saveImageUriToFirestore(String imageUri){
+        currentUserImageUri = imageUri;
+
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("userImage",imageUri);
+        editor.apply();
+
         Map<String , Object>map = new HashMap<>();
         map.put("imageUri" , imageUri);
 
+        String email = sharedPreferences.getString("userEmail","");
 
+        map.put("email",email);
+        FirebaseUtil.databaseUserImages().set(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        binding.progressBar.setVisibility(View.GONE);
+                    }
+                });
 
-        findEmailIdOfCurrentUser(new FindEmail() {
-            @Override
-            public void onEmailReceived(String email) {
-                if(email != null){
-                    map.put("email",email);
-                    FirebaseUtil.databaseUserImages().set(map)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    binding.progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                }
-            }
-        });
 
     }
     public void uploadImageToStorage(Uri image){
@@ -241,37 +244,16 @@ public class User_Profile extends AppCompatActivity {
     public void setImageOfUser(){
         binding.progressBar.setVisibility(View.VISIBLE);
 
-         FirebaseUtil.databaseUserImages().get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()){
-                                String imageUri = document.getString("imageUri");
-                                if(imageUri != null && !imageUri.isEmpty()){
-                                    SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("userImage",imageUri);
-                                    editor.apply();
-                                    Log.d("UserDetails","User image saved"+imageUri);
 
-                                    loadImage(imageUri);
-                                }
+        currentUserImageUri = sharedPreferences.getString("userImage","");
 
-                            }
-                            else {
-                                binding.progressBar.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Call_Method.showToast(User_Profile.this , "Image not fetched");
-                    }
-                });
+            if(!currentUserImageUri.isEmpty()){
+                loadImage(currentUserImageUri);
+            }
+            else{
+                binding.progressBar.setVisibility(View.GONE);
+            }
+
 
     }
     public void loadImage(String uri){
@@ -309,28 +291,5 @@ public class User_Profile extends AppCompatActivity {
             binding.codingTextview.setTypeface(null,Typeface.BOLD);
         }
     }
-    public void findEmailIdOfCurrentUser(FindEmail callback){
-        FirebaseUtil.findingMailId().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    UserSignUpDetails details = documentSnapshot.toObject(UserSignUpDetails.class);
-                    if(details != null){
-                        String email = details.getEmail();
-                        if(email == null || email.isEmpty()){
-                            callback.onEmailReceived(null);
-                        }
-                        else {
-                            callback.onEmailReceived(email);
-                        }
-                    }
-                    else {
-                        callback.onEmailReceived(null);
-                    }
 
-                }
-            }
-        });
-    }
 }
