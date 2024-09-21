@@ -26,6 +26,7 @@ import com.example.campusteamup.databinding.ActivityChatBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.Timestamp;
@@ -69,6 +70,8 @@ public class Chat extends AppCompatActivity {
 
         binding.sendMessageBtn.setOnClickListener(v->{
             String message = binding.messageInput.getText().toString().trim();
+            binding.messageInput.setText("");
+
             if(!message.isEmpty()){
                 sendMessageToUser(message);
 
@@ -80,10 +83,15 @@ public class Chat extends AppCompatActivity {
                         if(otherUserFCM != null){
                             SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
                             String currentUserName = sharedPreferences.getString("userName","");
+                            String currentUseId = sharedPreferences.getString("userId","");
+                            String currentUserImage = sharedPreferences.getString("userImage","");
 
-                            Log.d("FCM","Current User Name" + currentUserName);
-                            Log.d("FCM", "Sending Notification");
-                            NotificationHelper.sendNotification(otherUserFCM, message, currentUserName);
+                            Log.d("FCM","Current User Name " + currentUserName);
+                            Log.d("FCM","Current User Name " + currentUseId);
+                            Log.d("FCM","Current User Name " + currentUserImage);
+                            Log.d("FCM", "Sending Notification ");
+
+                            NotificationHelper.sendNotification(otherUserFCM, message, currentUserName , currentUseId , currentUserImage , this);
                         }
                         else{
                             Log.d("FCM","FCM found null");
@@ -145,7 +153,13 @@ public class Chat extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                       binding.messageInput.setText("");
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("FCM","Error Sending Notification");
                     }
                 });
 

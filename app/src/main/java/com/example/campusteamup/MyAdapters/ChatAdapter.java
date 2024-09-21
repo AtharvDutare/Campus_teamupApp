@@ -44,6 +44,8 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<ChatMessageModel , Cha
             holder.binding.otherUser.setVisibility(View.VISIBLE);
             holder.binding.currentUser.setVisibility(View.GONE);
             holder.binding.otherUser.setText(model.getMessage());
+            holder.binding.messageTimeOfCurrent.setVisibility(View.GONE);
+
             holder.binding.messageTimeOfOther.setVisibility(View.VISIBLE);
             holder.binding.messageTimeOfOther.setText(formatDate(model.getTimeWhenMessageSent()));
 

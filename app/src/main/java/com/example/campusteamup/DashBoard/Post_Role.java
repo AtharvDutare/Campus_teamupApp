@@ -77,6 +77,7 @@ public class Post_Role extends BottomSheetDialogFragment {
             showProgressBar(true);
             fetchUserSignUpDetailsAndPostRole(documentReference, linkedInUrl, codingUrl, userSignUpDetails -> {
                 if (userSignUpDetails != null) {
+
                     UserRoleDetails userRoleDetails = new UserRoleDetails(selectedRole, linkedInUrl, codingUrl, FirebaseUtil.currentUserUid(), userSignUpDetails);
 
                         checkTotalRoles(new CountRoles() {

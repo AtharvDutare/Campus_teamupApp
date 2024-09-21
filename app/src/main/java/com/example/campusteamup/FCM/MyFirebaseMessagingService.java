@@ -1,8 +1,10 @@
 package com.example.campusteamup.FCM;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
-
+import android.os.Build;
 import androidx.annotation.NonNull;
 
 import com.example.campusteamup.Method_Helper.Call_Method;
@@ -14,6 +16,7 @@ import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,6 +24,51 @@ import java.util.Arrays;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     static String FCM_TOKEN;
+    String CHANNEL_ID = "Chat_Channel";
+
+
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("NotificationDetails","Channel Created");
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "My Notification Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+
+
+        if (remoteMessage.getNotification() != null) {
+            String title = remoteMessage.getNotification().getTitle();
+            String body = remoteMessage.getNotification().getBody();
+            Log.d("NotificationDetails", "Title: " + title);
+            Log.d("NotificationDetails", "Body: " + body);
+        } else {
+            Log.d("NotificationDetails", "Notification is null");
+        }
+
+        if (remoteMessage.getData().size() > 0) {
+            String senderId = remoteMessage.getData().get("senderId");
+            String senderImage = remoteMessage.getData().get("senderImage");
+            Log.d("NotificationDetails", "Sender ID: " + senderId);
+            Log.d("NotificationDetails", "Sender Image: " + senderImage);
+        } else {
+            Log.d("NotificationDetails", "Data is empty");
+        }
+
+
+
+
+
+    }
+
     public static void generateFCM(OnCompleteListener<String> listener){
         try{
             FirebaseMessaging.getInstance().getToken()

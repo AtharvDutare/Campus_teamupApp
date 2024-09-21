@@ -10,11 +10,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -247,6 +250,12 @@ public class User_Profile extends AppCompatActivity {
                             if(document.exists()){
                                 String imageUri = document.getString("imageUri");
                                 if(imageUri != null && !imageUri.isEmpty()){
+                                    SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("userImage",imageUri);
+                                    editor.apply();
+                                    Log.d("UserDetails","User image saved"+imageUri);
+
                                     loadImage(imageUri);
                                 }
 

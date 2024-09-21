@@ -76,9 +76,8 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
                 Intent viewProfile = new Intent(context , View_Profile.class);
                 viewProfile.putExtra("userId", model.getUserId());
                 viewProfile.putExtra("linkedInUrl",model.getLinkedInUrl());
+
                 viewProfile.putExtra("userImage",imageOfUser);
-
-
                 viewProfile.putExtra("userName",model.getUserSignUpDetails().getUserName());
 
                 context.startActivity(viewProfile);

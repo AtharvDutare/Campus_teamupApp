@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusTeamUp"
         tools:targetApi="31">
+
         <service
             android:name=".FCM.MyFirebaseMessagingService"
             android:exported="false">
