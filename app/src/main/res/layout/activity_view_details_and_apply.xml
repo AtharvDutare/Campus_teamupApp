@@ -13,6 +13,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/toolBar"
         app:title="@string/app_name"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@id/toolBar">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
     <TextView
         android:id="@+id/teamDetailHeading"
         android:layout_width="match_parent"
@@ -20,26 +33,53 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:padding="10dp"
-        android:layout_below="@+id/toolBar"
+
         android:text="Team Members Details"
         android:textSize="22sp"
         android:textStyle="bold"/>
+
+
     <LinearLayout
+        android:id="@+id/memberList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="20dp"
         android:layout_below="@+id/teamDetailHeading"
-        android:id="@+id/memberList"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/requestToJoin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/memberList"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rounded_btn"
+        android:padding="10dp"
+        android:text="Request To Join"
+        android:textSize="14sp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/applyBtn"
-        android:background="@drawable/rounded_btn"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:textSize="14sp"
-        android:text="Apply"
-        android:layout_below="@+id/memberList"
-        android:layout_centerInParent="true"/>
+        android:id="@+id/message"
+        android:textSize="18sp"
+        android:layout_centerInParent="true"
+        android:textStyle="italic"
+        android:layout_below="@id/requestToJoin"/>
+</RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

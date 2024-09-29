@@ -4,6 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="updateDetails">Update Details</string>
     <string name="postedBy">Posted By : </string>
+    <string name="noRequestMessage">You will be notified when someone will
+        request to join your team.</string>
     <string name="default_web_client_id">"401086235530-ma64da27ifkbq2ucpc1m5vjt4th2pgdl.apps.googleusercontent.com"</string>
 
 </resources>

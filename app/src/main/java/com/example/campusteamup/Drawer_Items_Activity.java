@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyFragments.Notifications_Section;
@@ -41,10 +42,20 @@ public class Drawer_Items_Activity extends AppCompatActivity {
                     .add(R.id.mainFrameLayout,fragmentToLoad)
                     .commit();
         }
-        else if(fragmentTeamDetails == null){
+        else if(fragmentTeamDetails == null || fragmentTeamDetails.isEmpty()){
+            String senderName = getIntent().getStringExtra("title");
+            String senderId = getIntent().getStringExtra("senderId");
+            String senderImage = getIntent().getStringExtra("senderImage");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("senderName",senderName);
+            bundle.putString("senderId",senderId);
+            bundle.putString("senderImage",senderImage);
+
             fragmentToLoad = new Notifications_Section();
+            fragmentToLoad.setArguments(bundle);
             fragmentManager.beginTransaction()
-                    .add(R.id.mainFrameLayout , new Notifications_Section())
+                    .add(R.id.mainFrameLayout , fragmentToLoad)
                     .commit();
         }
 

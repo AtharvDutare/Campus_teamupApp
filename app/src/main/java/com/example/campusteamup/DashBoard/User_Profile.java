@@ -81,26 +81,10 @@ public class User_Profile extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-        TextView logOutYes = logOutDialog.findViewById(R.id.logOutYes);
-        TextView logOutNo = logOutDialog.findViewById(R.id.logOutNo);
 
-        binding.logOutButton.setOnClickListener(v->{
-            logOutDialog.show();
-        });
-        logOutYes.setOnClickListener(v->{
-            logOutDialog.dismiss();
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(User_Profile.this, UserLogin.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        });
-        logOutNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOutDialog.dismiss();
-            }
-        });
+
+
+
         binding.backToHomePage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.campusteamup.Drawer_Items_Activity;
@@ -32,6 +35,7 @@ import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.MyViewModel.RoleViewModel;
 
+import com.example.campusteamup.Network_Monitoring;
 import com.example.campusteamup.R;
 import com.example.campusteamup.UserLogin;
 import com.example.campusteamup.databinding.ActivityMainBinding;
@@ -63,11 +67,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(activityMainBinding.getRoot());
 
 
+
             Call_Method.lightActionBar(getWindow());  // making actionbar light so that date , battery becomes visible
+
 
 
          sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+
 
 
 
@@ -299,7 +306,6 @@ public class MainActivity extends AppCompatActivity {
                                 editor.putString("userEmail",getUserEmail);
                                 Log.d("UserDetails",getUserEmail);
                                 userEmail.setText(getUserEmail);
-
                             }
 
                             editor.apply();
@@ -313,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 
 

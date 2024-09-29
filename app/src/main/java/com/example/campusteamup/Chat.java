@@ -141,7 +141,9 @@ public class Chat extends AppCompatActivity {
 
         }
 
-        otherUserName = Objects.requireNonNull(getIntent().getStringExtra("otherUserName"));
+
+        otherUserName = getIntent().getStringExtra("otherUserName");
+
         currentUserId = FirebaseUtil.currentUserUid();
 
 
@@ -203,8 +205,12 @@ public class Chat extends AppCompatActivity {
     public void setImageAndName(){
         if(otherUserImage != null)
             Glide.with(this).load(otherUserImage).into(binding.imageOfOtherUser);
+        else
+            binding.imageOfOtherUser.setImageResource(R.drawable.profile_icon);
         if(otherUserName != null)
             binding.otherUserName.setText(otherUserName);
+        else
+            binding.otherUserName.setText("User");
     }
     public void fetchFCMWithUserId(OnCompleteListener<String>listener , String otherUserId){
         FirebaseUtil.saveFCM(otherUserId)

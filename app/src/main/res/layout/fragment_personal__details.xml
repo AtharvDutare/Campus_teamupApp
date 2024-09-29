@@ -29,6 +29,7 @@
                android:layout_height="wrap_content"
                android:textSize="18sp"
                android:padding="4dp"
+               android:backgroundTint="@color/off_white"
                android:id="@+id/nameInput"
                android:inputType="none"
                android:background="@drawable/rounded_corner_edittext"/>
@@ -75,6 +76,7 @@
                 android:textSize="18sp"
                 android:padding="4dp"
                 android:id="@+id/dobInput"
+                android:backgroundTint="@color/off_white"
                 android:inputType="none"
                 android:background="@drawable/rounded_corner_edittext"/>
         </LinearLayout>

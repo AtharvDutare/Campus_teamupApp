@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.campusteamup.Chat;
 import com.example.campusteamup.Drawer_Items_Activity;
 import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyModels.FCM_Model;
@@ -43,6 +44,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Log.d("NotificationDetails", "Channel Created");
             NotificationChannel channel = new NotificationChannel(
@@ -55,13 +57,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 manager.createNotificationChannel(channel);
             }
         }
+        Log.d("NotificationDetails","Going");
 
 
         if (remoteMessage.getNotification() != null) {
+            Log.d("NotificationDetails","Details aa gai");
             title = remoteMessage.getNotification().getTitle();
             body = remoteMessage.getNotification().getBody();
-            Log.d("NotificationDetails", "Title: " + title);
-            Log.d("NotificationDetails", "Body: " + body);
         } else {
             Log.d("NotificationDetails", "Notification is null");
         }
@@ -69,25 +71,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             senderId = remoteMessage.getData().get("senderId");
             senderImage = remoteMessage.getData().get("senderImage");
-            Log.d("NotificationDetails", "Sender ID: " + senderId);
-            Log.d("NotificationDetails", "Sender Image: " + senderImage);
         } else {
             Log.d("NotificationDetails", "Data is empty");
         }
 
-        Intent intent = new Intent(this, Drawer_Items_Activity.class);
+        Intent intent = new Intent(this, Chat.class);
         intent.putExtra("notification_details", "notificationDetails");
-        intent.putExtra("title", title);
+        intent.putExtra("otherUserName", title);
         intent.putExtra("body", body);
-        intent.putExtra("senderId", senderId);
-        intent.putExtra("senderImage", senderImage);
+        intent.putExtra("otherUserId", senderId);
+        intent.putExtra("otherUserImage", senderImage);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         SharedPreferences preferences = getSharedPreferences("Other_User",Context.MODE_PRIVATE);
         String currentChattingUserId = preferences.getString("otherUserId","");
 
-        Log.d("UserId",senderId);
-        Log.d("userId",currentChattingUserId);
 
         if(!currentChattingUserId.equals(senderId)){
             triggerNotification(intent);
@@ -129,30 +127,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static void saveFcmToFirebase(String fcm) {
 
         FCM_Model fcmModel = new FCM_Model(FCM_TOKEN);
-
         generateUserId(task -> {
-            if (task.isSuccessful()) {
+            if(task.isSuccessful()){
                 String currentUserId = task.getResult();
-                if (currentUserId != null) {
+                if(currentUserId != null){
                     FirebaseUtil.saveFCM(currentUserId).set(fcmModel)
                             .addOnCompleteListener(task1 -> {
-                                if (task1.isSuccessful()) {
-                                    Log.d("FCM Saved ", "FCM Saved");
-                                } else {
+                                if(task1.isSuccessful()){
+                                    Log.d("FCM Saved ","FCM Saved");
+                                }
+                                else {
                                     Log.d("FCM Save Error", task1.getException() + " ");
                                 }
                             });
-                } else {
-                    Log.d("User null", currentUserId + " ");
+                }
+                else{
+                    Log.d("User null",currentUserId + " ");
                 }
 
             }
         });
-
-
     }
 
-    public static void generateUserId(OnCompleteListener<String> listener) {
+    public static void generateUserId(OnCompleteListener<String>listener){
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
@@ -173,11 +170,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     }
 
+
     public void triggerNotification(Intent intent) {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.profile_icon)
+                .setSmallIcon(R.drawable.app_logo)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setAutoCancel(true)

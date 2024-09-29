@@ -22,6 +22,7 @@ import com.example.campusteamup.MyCallBacks.FindEmail;
 import com.example.campusteamup.MyModels.Team_Details_List_Model;
 import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
+import com.example.campusteamup.Network_Monitoring;
 import com.example.campusteamup.R;
 import com.example.campusteamup.MyModels.Team_Members_Model;
 import com.example.campusteamup.databinding.FragmentTeamDetailsBinding;
@@ -69,6 +70,11 @@ public class Team_Details extends Fragment {
         binding.updateDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                      if(!Network_Monitoring.isNetworkAvailable(requireContext())){
+                          Call_Method.showToast(requireContext() , "No Network Connection");
+                          return;
+                      }
+
                     String name , email;
 
                      List<Team_Members_Model> totalMember = new ArrayList<>();
@@ -90,8 +96,11 @@ public class Team_Details extends Fragment {
                         totalMember.add(new Team_Members_Model(name , email));
                     }
                      // if i reached end means that no null or empty data found
-                    if(i == listOfMemberDetails.size())
-                    sendAllMemberDetailsToDatabase(totalMember);
+                    if(i == listOfMemberDetails.size()){
+                        Log.d("Team","Fields are not null");
+                        sendAllMemberDetailsToDatabase(totalMember);
+                    }
+
                     else return;
             }
         });
@@ -169,12 +178,15 @@ public class Team_Details extends Fragment {
     }
     public void sendAllMemberDetailsToDatabase(List<Team_Members_Model> totalMember){
         Team_Details_List_Model listModel = new Team_Details_List_Model(totalMember);
+        Log.d("Team","Going to update "+ totalMember.size());
+
         FirebaseUtil.uploadTeamDetails().set(listModel)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                       if(task.isSuccessful()) {
                           Call_Method.showToast(requireContext(),"Updated Successfully");
+                          binding.progressBar.setVisibility(View.GONE);
                       }
                     }
                 });
@@ -234,6 +246,7 @@ public class Team_Details extends Fragment {
     public void showTeamDetailsOfCurrentUser(List<Team_Members_Model>totalMember){
 
 //        binding.memberList.removeAllViews();
+        int count = 0;
 
         for (Team_Members_Model member : totalMember){
             Log.d("AddTeamDetails","Member fetched");
@@ -242,6 +255,7 @@ public class Team_Details extends Fragment {
             if (member.getEmail().equals(currentUserEmail)) {
                 continue;
             }
+            Log.d("Team","Member "+ ++count);
             addMember();
             listOfMemberDetails.get(listOfMemberDetails.size()-1).setText(member.getEmail());
             listOfMemberDetails.get(listOfMemberDetails.size()-2).setText(member.getName());

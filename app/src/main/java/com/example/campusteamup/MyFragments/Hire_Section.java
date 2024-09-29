@@ -22,6 +22,7 @@ import com.example.campusteamup.MyModels.UserRoleDetails;
 import com.example.campusteamup.MyModels.VacancyModel;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.MyViewModel.RoleViewModel;
+import com.example.campusteamup.Network_Monitoring;
 import com.example.campusteamup.databinding.FragmentHireSectionBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,6 +34,7 @@ public class Hire_Section extends Fragment {
     RoleViewModel roleViewModel ;
     Handler handler ;
     Runnable searchRunnable;
+    CollectionReference allRoleData;
     public Hire_Section() {
     }
 
@@ -41,12 +43,18 @@ public class Hire_Section extends Fragment {
         binding = FragmentHireSectionBinding.inflate(inflater);
 
 
-            CollectionReference allRoleData = FirebaseUtil.getAllUserRoles();
+             if(Network_Monitoring.isNetworkAvailable(requireContext())){
+                allRoleData  = FirebaseUtil.getAllUserRoles();
+             }
+             else{
+                 return binding.getRoot();
+             }
+
 
             FirestoreRecyclerOptions<UserRoleDetails> option = new FirestoreRecyclerOptions.Builder<UserRoleDetails>()
                     .setQuery(allRoleData, UserRoleDetails.class)
                     .build();
-            handler = new Handler();
+
 
             binding.roleRecyclerView.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
             roleListAdapter = new RoleListAdapter(option , requireActivity());
@@ -54,7 +62,7 @@ public class Hire_Section extends Fragment {
             binding.roleRecyclerView.setAdapter(roleListAdapter);
             roleListAdapter.startListening();
 
-            binding.shimmerLayout.startShimmerAnimation();
+
 
             roleListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
                 @Override
@@ -117,24 +125,40 @@ public class Hire_Section extends Fragment {
         super.onStart();
 
             Log.d("Hire_Section", "Adapter starts listening.");
+
+        if(Network_Monitoring.isNetworkAvailable(requireContext()) && roleListAdapter != null){
             roleListAdapter.startListening();
+        }
+        else{
+            binding.shimmerLayout.startShimmerAnimation();
+            Call_Method.showToast(requireContext() , "No Network Connection");
+        }
+
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-            Log.d("Hire_Section", "Adapter stops listening.");
+        if(Network_Monitoring.isNetworkAvailable(requireContext())&& roleListAdapter != null){
             roleListAdapter.stopListening();
+            binding.shimmerLayout.startShimmerAnimation();
+        }
+
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        roleListAdapter.startListening();
-        roleListAdapter.notifyDataSetChanged();
+        if(Network_Monitoring.isNetworkAvailable(requireContext()) && roleListAdapter != null){
+            roleListAdapter.startListening();
+            roleListAdapter.notifyDataSetChanged();
+            binding.shimmerLayout.startShimmerAnimation();
+
+        }
+
+
     }
 
     public void updateResults(String roleToSearch){

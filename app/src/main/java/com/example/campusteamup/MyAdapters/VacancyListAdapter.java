@@ -40,11 +40,13 @@ public class VacancyListAdapter extends FirestoreRecyclerAdapter<VacancyModel ,V
         if(model.getPostedBy().equals(FirebaseUtil.currentUserUid())){
             holder.binding.teamName.setText("Team Name : " + model.getTeamName());
             holder.binding.deleteVacancy.setVisibility(View.VISIBLE);
+            holder.binding.apply.setVisibility(View.GONE);
         }
 
         else {
             holder.binding.teamName.setText("Team Name : "+ model.getTeamName());
             holder.binding.deleteVacancy.setVisibility(View.GONE);
+            holder.binding.apply.setVisibility(View.VISIBLE);
         }
 
         holder.binding.roleLookingFor.setText("Looking for  : "+model.getRoleLookingFor());
@@ -61,7 +63,10 @@ public class VacancyListAdapter extends FirestoreRecyclerAdapter<VacancyModel ,V
                 Intent intent = new Intent(context , ViewDetailsAndApply.class);
                 intent.putExtra("postedBy",model.getPostedBy());
                 context.startActivity(intent);
+                notifyItemChanged(position); // here u make changes
             }
+        });
+        holder.binding.rootLayout.setOnClickListener(v -> {
         });
 
     }

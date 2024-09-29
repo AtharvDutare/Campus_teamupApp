@@ -182,17 +182,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/detailsLayout"
             android:id="@+id/profileFrameLayout"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_below="@+id/profileFrameLayout"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:id="@+id/logOutButton"
-                android:layout_centerInParent="true"
-                android:src="@drawable/logout_icon"/>
-        </RelativeLayout>
+
 
     </RelativeLayout>
 

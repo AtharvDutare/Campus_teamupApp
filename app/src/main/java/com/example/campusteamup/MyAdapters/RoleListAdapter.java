@@ -82,7 +82,9 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
 
                 context.startActivity(viewProfile);
             });
+            holder.binding.rootLayout.setOnClickListener(v -> {
 
+            });
     }
 
     @NonNull
@@ -130,7 +132,7 @@ public class RoleListAdapter extends FirestoreRecyclerAdapter<UserRoleDetails , 
 
     }
     public void setImageOfUser(ImageView imageView , String userImage , RoleListViewHolder holder){
-        if(userImage.equals("noImage")){
+        if(userImage == null  || userImage.equals("noImage")){
             imageView.setImageResource(R.drawable.profile_icon);
         }
         else{

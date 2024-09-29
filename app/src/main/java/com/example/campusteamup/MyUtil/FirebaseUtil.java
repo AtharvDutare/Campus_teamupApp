@@ -81,4 +81,10 @@ public class FirebaseUtil {
     public static DocumentReference saveFCM(String userId){
         return FirebaseFirestore.getInstance().collection("fcmtoken").document(userId);
     }
+   public static CollectionReference saveRequest(String postedBy){
+        return FirebaseFirestore.getInstance().collection("joinRequest").document(postedBy).collection("allRequest");
+   }
+   public static Query allRequestToVacancy(String postedBy){
+        return saveRequest(postedBy);
+   }
 }

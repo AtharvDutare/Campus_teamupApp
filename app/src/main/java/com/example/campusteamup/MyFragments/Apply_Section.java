@@ -8,18 +8,23 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyAdapters.VacancyListAdapter;
 import com.example.campusteamup.MyModels.VacancyModel;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 
+import com.example.campusteamup.Network_Monitoring;
+import com.example.campusteamup.R;
 import com.example.campusteamup.databinding.FragmentApplySectionBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
@@ -33,6 +38,7 @@ public class Apply_Section extends Fragment {
     FragmentApplySectionBinding binding;
     Handler handler;
     Runnable searchRunnable;
+    CollectionReference allVacancyData;
 
     public Apply_Section() {
 
@@ -43,7 +49,15 @@ public class Apply_Section extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentApplySectionBinding.inflate(inflater);
-        CollectionReference allVacancyData = FirebaseUtil.allVacancy();
+
+        if(Network_Monitoring.isNetworkAvailable(requireContext())){
+            allVacancyData  = FirebaseUtil.getAllUserRoles();
+        }
+        else{
+            return binding.getRoot();
+        }
+
+         allVacancyData = FirebaseUtil.allVacancy();
 
         FirestoreRecyclerOptions<VacancyModel> options = new FirestoreRecyclerOptions.Builder<VacancyModel>()
                 .setQuery(allVacancyData, VacancyModel.class)
@@ -54,7 +68,7 @@ public class Apply_Section extends Fragment {
         binding.vacancyListRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext(), DividerItemDecoration.VERTICAL));
         binding.vacancyListRecyclerView.setAdapter(vacancyListAdapter);
         vacancyListAdapter.startListening();
-        binding.shimmerLayout.startShimmerAnimation();
+
         handleShimmerEffect();
 
         binding.searchRole.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -83,20 +97,33 @@ public class Apply_Section extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        vacancyListAdapter.startListening();
+
+        if(Network_Monitoring.isNetworkAvailable(requireContext()) && vacancyListAdapter != null){
+            vacancyListAdapter.startListening();
+        }
+        else{
+            Call_Method.showToast(requireContext() , "No Network Connection");
+            binding.shimmerLayout.startShimmerAnimation();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        vacancyListAdapter.startListening();
-        vacancyListAdapter.notifyDataSetChanged();
+        if(Network_Monitoring.isNetworkAvailable(requireContext()) && vacancyListAdapter != null){
+            vacancyListAdapter.startListening();
+            vacancyListAdapter.notifyDataSetChanged();
+            binding.shimmerLayout.startShimmerAnimation();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        vacancyListAdapter.stopListening();
+        if(Network_Monitoring.isNetworkAvailable(requireContext())&& vacancyListAdapter != null){
+            vacancyListAdapter.stopListening();
+            binding.shimmerLayout.startShimmerAnimation();
+        }
     }
 
     public void updateResults(String roleToSearch) {

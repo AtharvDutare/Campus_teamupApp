@@ -5,6 +5,8 @@
 
     android:layout_margin="5dp"
     android:backgroundTint="@color/off_white"
+    android:id="@+id/rootLayout"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content">
 
     <LinearLayout

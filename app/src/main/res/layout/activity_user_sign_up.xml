@@ -24,7 +24,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/iist"/>
+                android:background="@drawable/app_logo"/>
         </RelativeLayout>
         <TextView
             android:layout_width="match_parent"

@@ -1,34 +1,35 @@
 package com.example.campusteamup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.Image;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.campusteamup.Method_Helper.Call_Method;
 import com.example.campusteamup.MyCallBacks.FindEmail;
+import com.example.campusteamup.MyModels.Request_Role_Model;
 import com.example.campusteamup.MyModels.Team_Details_List_Model;
 import com.example.campusteamup.MyModels.Team_Members_Model;
 import com.example.campusteamup.MyModels.UserSignUpDetails;
 import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.databinding.ActivityViewDetailsAndApplyBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -44,21 +45,74 @@ public class ViewDetailsAndApply extends AppCompatActivity {
     List<ImageView> imageListOfMember;
 
     Map<String , ImageView>allEmailAndImage;
+    boolean isCurrentMemeberIsInTeam = false;
+    String requestedTo , requestedBy, requestedByName ,requestedByImage , requestedByEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityViewDetailsAndApplyBinding.inflate(getLayoutInflater());
 
+
         imageListOfMember = new ArrayList<>();
 
         allEmailAndImage = new HashMap<>();
 
+        requestedTo = getIntent().getStringExtra("postedBy");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE);
+
+        requestedBy = sharedPreferences.getString("userId","");
+        requestedByName = sharedPreferences.getString("userName","");
+        requestedByImage = sharedPreferences.getString("userImage","");
+        requestedByEmail = sharedPreferences.getString("userEmail","");
+
+
+
+        if(Network_Monitoring.isNetworkAvailable(this)){
+            checkIfUserAlreadyApplied(requestedTo , requestedBy);
+        }
+        else{
+            binding.progressBar.setVisibility(View.VISIBLE);
+            Call_Method.showToast(this , "No Network Connection");
+        }
+
+
+        Dialog requestDialog = new Dialog(this);
+        requestDialog.setContentView(R.layout.request_role);
+        TextView sendRequest = requestDialog.findViewById(R.id.sendRequest);
+        TextView doNotSendRequest = requestDialog.findViewById(R.id.doNotSendRequest);
+
+        sendRequest.setOnClickListener(v -> {
+            requestDialog.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
+            if(Network_Monitoring.isNetworkAvailable(ViewDetailsAndApply.this))
+            saveRequestToFirebase(requestDialog);
+            else {
+                Call_Method.showToast(ViewDetailsAndApply.this , "No Network Connection");
+                showProgressBar(false , requestDialog);
+            }
+        });
+        doNotSendRequest.setOnClickListener(v -> requestDialog.dismiss());
 
         setContentView(binding.getRoot());
         setToolbarAndActionBar();
-        findUserIdWhoPosted();
-        fetchTeamDetailsByEmailId();
+        if(Network_Monitoring.isNetworkAvailable(this)){
+            binding.progressBar.setVisibility(View.VISIBLE);
+            findUserIdWhoPosted();
+            fetchTeamDetailsByEmailId();
+        }
+        else {
+            Call_Method.showToast(this , "No Network Connection");
+        }
+
+        binding.requestToJoin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    requestDialog.show();
+            }
+        });
+
     }
 
 
@@ -137,9 +191,11 @@ public class ViewDetailsAndApply extends AppCompatActivity {
             }
         });
 
+        binding.progressBar.setVisibility(View.GONE);
 
     }
     public void addAllMembers(List<Team_Members_Model>model){
+
 
         for(Team_Members_Model member : model){
             addMember(member.getName() , member.getEmail());
@@ -162,6 +218,12 @@ public class ViewDetailsAndApply extends AppCompatActivity {
         TextView textView = view.findViewById(R.id.memberName);
         textView.setText(name);
         ImageView imageView = view.findViewById(R.id.teamMemberProfile);
+
+        // if user is already in team
+        if(email.equals(requestedByEmail)){
+            binding.requestToJoin.setVisibility(View.GONE);
+            binding.message.setText("Your Team");
+        }
 
 
         allEmailAndImage.put(email , imageView);
@@ -194,5 +256,108 @@ public class ViewDetailsAndApply extends AppCompatActivity {
                     }
                 });
     }
+    public void saveRequestToFirebase(Dialog requestDialog){
 
+
+        Request_Role_Model requestRoleModel = new Request_Role_Model(requestedBy ,  requestedTo , requestedByName , requestedByImage, requestedByEmail);
+
+        FirebaseUtil.saveRequest(requestedTo).add(requestRoleModel)
+                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                      if(task.isSuccessful()){
+                          showProgressBar(false , requestDialog);
+                          sendNotification(requestedTo);
+                          Call_Method.showToast(ViewDetailsAndApply.this , "Request Sent");
+                          binding.requestToJoin.setVisibility(View.GONE);
+                      }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showProgressBar(false , requestDialog);
+                        Call_Method.showToast(ViewDetailsAndApply.this , "Something Went Wrong \n Please Try Again Later");
+                    }
+                });
+    }
+    public void showProgressBar(boolean command  ,Dialog requestDialog){
+        ProgressBar progressBar = requestDialog.findViewById(R.id.progressBar);
+
+        if(command){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        else {
+            progressBar.setVisibility(View.GONE);
+            requestDialog.dismiss();
+        }
+    }
+    public void checkIfUserAlreadyApplied(String postedBy  , String currentUser){
+        binding.progressBar.setVisibility(View.VISIBLE);
+        // first fetch all the applicant who send request to this vacancy
+
+        FirebaseUtil.allRequestToVacancy(postedBy).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+              if(task.isSuccessful()){
+                  QuerySnapshot querySnapshot = task.getResult();
+
+                  if(querySnapshot != null){
+                      for(DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()){
+                          Request_Role_Model model = documentSnapshot.toObject(Request_Role_Model.class);
+                          if (model != null && model.getRequestedTo().equals(currentUser)){
+                              binding.requestToJoin.setVisibility(View.GONE);
+                              binding.message.setText("Your Team");
+                          }
+                          else if(model != null && model.getRequestedBy().equals(currentUser)){
+                              // only one time request can be sent
+                              binding.requestToJoin.setVisibility(View.GONE);
+                              binding.message.setText("You have already applied");
+                          }
+                      }
+                  }
+
+              }
+            }
+        });
+    }
+    public void sendNotification(String personWhoPosted){
+        fetchFCMWhoPostedRole(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+                    String otherUserFCM = task.getResult();
+                    NotificationHelper.sendNotification(otherUserFCM , requestedByName + " request to Join Your Team",requestedByName , requestedBy , requestedByImage , ViewDetailsAndApply.this);
+                }
+            }
+        },personWhoPosted);
+    }
+    public void fetchFCMWhoPostedRole(OnCompleteListener<String>listener , String personWhoPosted){
+        FirebaseUtil.saveFCM(personWhoPosted)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+
+                        if (task.isSuccessful() && task.getResult() != null){
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot != null){
+                                String otherUserFCM = snapshot.getString("fcm_TOKEN");
+                                taskCompletionSource.setResult(otherUserFCM);
+
+                                Log.d("FCM","Other user FCM fetched " + otherUserFCM);
+                            }
+                            else {
+                                Log.d("FCM","FCM snapshot is null");
+                                taskCompletionSource.setException(new Exception("FCM snapsot is null"));
+                            }
+                        }
+                        else {
+                            Log.d("FCM","Task fail to get other user FCM");
+                            taskCompletionSource.setException(new Exception("Task fail to get other user FCM"));
+                        }
+                        listener.onComplete(taskCompletionSource.getTask());
+                    }
+                });
+    }
 }

@@ -1,66 +1,89 @@
 package com.example.campusteamup.MyFragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.campusteamup.MyAdapters.Request_Adapter;
+import com.example.campusteamup.MyModels.Request_Role_Model;
+import com.example.campusteamup.MyModels.Team_Details_List_Model;
+import com.example.campusteamup.MyUtil.FirebaseUtil;
 import com.example.campusteamup.R;
+import com.example.campusteamup.databinding.FragmentNotificationsSectionsBinding;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Notifications_Section#newInstance} factory method to
- * create an instance of this fragment.
- */
+import okhttp3.internal.cache.DiskLruCache;
+
+
 public class Notifications_Section extends Fragment {
+    String currentUserId ;
+    Request_Adapter requestAdapter;
+    RecyclerView requestRecyclerView;
+    FragmentNotificationsSectionsBinding binding;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public Notifications_Section() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Notifications_Sections.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Notifications_Section newInstance(String param1, String param2) {
-        Notifications_Section fragment = new Notifications_Section();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        binding = FragmentNotificationsSectionsBinding.inflate(inflater);
+
+        currentUserId = requireActivity().getSharedPreferences("USER_DETAILS", Context.MODE_PRIVATE).getString("userId","");
+
+        //fetching all the request made to user vacancy post
+        fetchAllRequestAndShow();
+
+
+        return binding.getRoot();
+    }
+    public void fetchAllRequestAndShow(){
+        Query query = FirebaseUtil.allRequestToVacancy(currentUserId);
+
+        showMessageWhenNoRequest(query);
+        FirestoreRecyclerOptions<Request_Role_Model>options = new FirestoreRecyclerOptions.Builder<Request_Role_Model>()
+                .setQuery(query , Request_Role_Model.class)
+                .build();
+
+
+
+        requestAdapter = new Request_Adapter(options , requireContext());
+        binding.notificationRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.notificationRecyclerView.addItemDecoration(new DividerItemDecoration(binding.getRoot().getContext(), DividerItemDecoration.VERTICAL));
+        binding.notificationRecyclerView.setAdapter(requestAdapter);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onResume() {
+        super.onResume();
+        requestAdapter.startListening();
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notifications__sections, container, false);
+    public void showMessageWhenNoRequest(Query query){
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value == null || value.isEmpty()){
+                    binding.noRequestMessage.setVisibility(View.VISIBLE);
+                }
+                else {
+                    binding.noRequestMessage.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 }
