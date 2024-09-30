@@ -304,6 +304,7 @@ public class ViewDetailsAndApply extends AppCompatActivity {
 
                   if(querySnapshot != null){
                       for(DocumentSnapshot documentSnapshot : querySnapshot.getDocuments()){
+
                           Request_Role_Model model = documentSnapshot.toObject(Request_Role_Model.class);
                           if (model != null && model.getRequestedTo().equals(currentUser)){
                               binding.requestToJoin.setVisibility(View.GONE);
