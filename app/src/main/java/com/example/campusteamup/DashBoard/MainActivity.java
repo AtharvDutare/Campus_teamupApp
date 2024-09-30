@@ -276,6 +276,19 @@ public class MainActivity extends AppCompatActivity {
         TextView userName = view.findViewById(R.id.userName);
         TextView userEmail = view.findViewById(R.id.userEmail);
 
+        SharedPreferences shared = getSharedPreferences("USER_DETAILS",Context.MODE_PRIVATE);
+
+        String userNameData = shared.getString("userName","");
+        String userEmailData = shared.getString("userEmail","");
+
+
+        // if already in shared preferences than no need to fetch
+        if(!userNameData.isEmpty()){
+            userName.setText(userNameData);
+            userEmail.setText(userEmailData);
+            return;
+        }
+
 
 
         FirebaseUtil.currentUserDetails().get()
