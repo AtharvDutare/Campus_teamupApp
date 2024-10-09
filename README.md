@@ -67,7 +67,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
 </table>
 
 ## Download Apk
-https://drive.google.com/file/d/155oeNl-J0Is6Tg6-kTDBhar6kLmk6yvv/view?usp=drive_link
+https://drive.google.com/file/d/155oeNl-J0Is6Tg6-kTDBhar6kLmk6yvv/view?usp=drive_link](https://drive.google.com/file/d/1JT3lB2uQh3FXSLoTmCCOCec-nrJo-NxG/view?usp=drive_link)
 
 ## 🛠️ Technologies and Tools Used
 
