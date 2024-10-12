@@ -67,7 +67,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
 </table>
 
 ## Download Apk
-https://drive.google.com/file/d/1JT3lB2uQh3FXSLoTmCCOCec-nrJo-NxG/view?usp=drive_link
+https://drive.google.com/file/d/1wSjz1f7l02wbKQrDZJT4IGRfY4CDldGL/view?usp=drive_link
 ## 🛠️ Technologies and Tools Used
 
 - **💻 Java**: Core programming language used for the app's logic and backend functionality.
