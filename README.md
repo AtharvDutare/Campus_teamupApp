@@ -29,7 +29,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/sections.jpg" alt="SignUp or Login" width="200"/>
-      <h4>Team Details & Notification</h4>
+      <h2>Team Details & Notification</h2>
     </td>
   </tr>
   <tr>
@@ -39,7 +39,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/teamJointRequest.jpg" alt="SignUp or Login" width="200"/>
-      <h4>Accept Team Join Request</h4>
+      <h2>Accept Team Join Request</h2>
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/rolesUser.jpg" alt="SignUp or Login" width="200"/>
@@ -47,7 +47,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/requestToJoin.jpg" alt="SignUp or Login" width="200"/>
-      <h4>Request To Join Team</h4>
+      <h2>Request To Join Team</h2>
     </td>
   </tr>
   <tr>
@@ -57,7 +57,7 @@ Whether you're looking to join a team or hire members for your project, Campus T
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/search.jpg" alt="SignUp or Login" width="200"/>
-      <h4>Search by Roles</h4>
+      <h2>Search by Roles</h2>
     </td>
     <td>
       <img src="https://github.com/AyushPorwal10/Campus_TeamUp_Images/blob/main/viewProfile.jpg" alt="SignUp or Login" width="200"/>
